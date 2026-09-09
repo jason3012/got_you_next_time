@@ -1,0 +1,21 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Java / Maven
+backend/target/
+target/
+
+# Node / Vite
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# IDE / OS
+.idea/
+*.iml
+.DS_Store
+
+# Local test and tool output
+.tooling/

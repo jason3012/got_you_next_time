@@ -1,0 +1,18 @@
+{
+  "name": "settleup-tooling",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local tooling commands for SettleUp",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup": "npm run setup:tooling",
+    "setup:tooling": "brew bundle --file=Brewfile",
+    "phase0:check": "./scripts/phase0-doctor.sh",
+    "update": "npm run update:tooling && npm run update:dependencies",
+    "update:tooling": "brew update && brew bundle --file=Brewfile --upgrade",
+    "update:dependencies": "./scripts/update-dependencies.sh",
+    "dependencies:check": "./scripts/check-dependency-updates.sh"
+  }
+}
