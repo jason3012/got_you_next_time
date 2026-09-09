@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: settleup-api
+  profiles:
+    default: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:settleup}
+    username: ${POSTGRES_USER:settleup}
+    password: ${POSTGRES_PASSWORD:localdevpassword}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

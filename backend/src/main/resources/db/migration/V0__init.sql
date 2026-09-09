@@ -1,0 +1,1 @@
+-- Flyway baseline migration. Domain tables begin in Phase 2.
