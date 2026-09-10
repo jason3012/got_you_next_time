@@ -537,7 +537,9 @@ settleup/
 **Files:** everything under `frontend/`
 
 **Do:**
-- React + Vite + TypeScript. Tailwind for styling.
+- React + Vite + TypeScript. Use Fluent UI v9 as the primary component library and use `@fluentui/react-icons` for icons.
+- Use Radix UI only for accessible primitives or interactions that Fluent UI does not provide. Do not add another visual component library or Tailwind.
+- Use TanStack Query for API data, caching, loading, and error states. Use React Hook Form with Zod for form state and validation.
 - Typed API client with JWT attached, and automatic refresh on 401.
 - Pages: Login/Register, Groups list, Group detail (members, expenses, running balances), Add Expense (all three split strategies), **Settle Up** (the transfer list — this is the money screen, make it clear and satisfying), Link Bank (Plaid Link via `react-plaid-link`), Suggestion Inbox (confirm/reject cards).
 - Loading and error states everywhere. Empty states that explain what to do next.

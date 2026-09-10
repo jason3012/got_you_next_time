@@ -46,7 +46,3 @@ npm run update:dependencies # Update backend and frontend dependencies
 ```
 
 Review dependency changes and run tests before committing an update.
-
-## Project plan
-
-[settleup-build-spec.md](settleup-build-spec.md) describes the build phases and acceptance criteria. The next step is Phase 1, which creates the Spring Boot app and Docker Compose setup.
