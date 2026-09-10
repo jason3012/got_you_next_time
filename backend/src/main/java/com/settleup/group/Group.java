@@ -54,6 +54,14 @@ public class Group {
         this.createdBy = createdBy;
     }
 
+    public void addMember(GroupMember member) {
+        members.add(member);
+    }
+
+    public void removeMember(GroupMember member) {
+        members.remove(member);
+    }
+
     public UUID getId() { return id; }
     public String getName() { return name; }
     public User getCreatedBy() { return createdBy; }

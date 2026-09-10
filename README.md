@@ -2,7 +2,7 @@
 
 SettleUp is an expense-sharing application for friend groups. It will connect to a bank account, find transactions that may belong to a group, show each member's balance, and suggest payments to settle the group.
 
-Current status: Phase 0, local setup.
+Current status: Phases 1 through 4 are complete. The backend supports groups, shared expenses, balances, and settlement plans.
 
 ## Tech stack
 
@@ -11,7 +11,7 @@ Current status: Phase 0, local setup.
 - Plaid Sandbox for bank account data
 - Docker for local services and app containers
 - Kubernetes, kind, and Helm for local deployment work
-- React, Vite, TypeScript, and Tailwind for the frontend
+- React, Vite, TypeScript, Fluent UI, and Radix UI for the frontend
 
 ## Setup
 
@@ -26,7 +26,7 @@ npm run phase0:check
 
 `npm run setup` installs the tools listed in the `Brewfile`.
 
-Create a local environment file before Phase 1:
+Create a local environment file:
 
 ```bash
 cp .env.example .env
@@ -34,7 +34,15 @@ cp .env.example .env
 
 SettleUp uses Plaid Sandbox to retrieve bank transaction data. Create a Plaid Sandbox account and add its client ID and secret to `.env` before using the bank connection features. Each local setup needs its own credentials.
 
-PostgreSQL will run in Docker during Phase 1. Docker Compose will create the `settleup` database and user using the values in `.env`.
+Start PostgreSQL and the backend:
+
+```bash
+docker compose up -d
+cd backend
+./mvnw spring-boot:run
+```
+
+The health endpoint is available at <http://localhost:8080/actuator/health>. API documentation is available at <http://localhost:8080/swagger-ui.html>.
 
 ## Commands
 

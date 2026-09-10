@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface ExpenseSplitRepository extends JpaRepository<ExpenseSplit, UUID> {
+    boolean existsByExpenseGroupIdAndUserId(UUID groupId, UUID userId);
 }

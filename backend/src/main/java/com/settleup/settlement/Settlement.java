@@ -1,32 +1,26 @@
-package com.settleup.expense;
+package com.settleup.settlement;
 
 import com.settleup.common.Money;
 import com.settleup.group.Group;
 import com.settleup.user.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "expenses")
-public class Expense {
+@Table(name = "settlements")
+public class Settlement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,25 +31,15 @@ public class Expense {
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "paid_by", nullable = false)
-    private User paidBy;
+    @JoinColumn(name = "from_user_id", nullable = false)
+    private User fromUser;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
-
-    @Column(nullable = false)
-    private String description;
+    @JoinColumn(name = "to_user_id", nullable = false)
+    private User toUser;
 
     @Column(name = "amount_cents", nullable = false)
     private Money amount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "split_strategy", nullable = false)
-    private SplitStrategy splitStrategy;
-
-    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ExpenseSplit> splits = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -65,37 +49,21 @@ public class Expense {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    protected Expense() {
+    protected Settlement() {
     }
 
-    public Expense(
-            Group group,
-            User paidBy,
-            User createdBy,
-            String description,
-            Money amount,
-            SplitStrategy splitStrategy
-    ) {
+    public Settlement(Group group, User fromUser, User toUser, Money amount) {
         this.group = group;
-        this.paidBy = paidBy;
-        this.createdBy = createdBy;
-        this.description = description;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
         this.amount = amount;
-        this.splitStrategy = splitStrategy;
-    }
-
-    public void addSplit(ExpenseSplit split) {
-        splits.add(split);
     }
 
     public UUID getId() { return id; }
     public Group getGroup() { return group; }
-    public User getPaidBy() { return paidBy; }
-    public User getCreatedBy() { return createdBy; }
-    public String getDescription() { return description; }
+    public User getFromUser() { return fromUser; }
+    public User getToUser() { return toUser; }
     public Money getAmount() { return amount; }
-    public SplitStrategy getSplitStrategy() { return splitStrategy; }
-    public Set<ExpenseSplit> getSplits() { return Set.copyOf(splits); }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
 }
