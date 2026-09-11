@@ -2,7 +2,15 @@
 
 SettleUp is an expense-sharing application for friend groups. It will connect to a bank account, find transactions that may belong to a group, show each member's balance, and suggest payments to settle the group.
 
-Current status: Phases 1 through 4 are complete. The backend supports groups, shared expenses, balances, and settlement plans.
+## Project status
+
+Phase 5 is complete. The project currently has a working backend for the full manual expense-sharing flow:
+
+- Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
+- Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
+- Phase 5: account registration and login, BCrypt password hashing, signed JWT access tokens, authenticated user identity, and protected APIs
+
+The next milestone is Phase 6: Plaid Sandbox integration for connecting bank accounts and importing transactions. The React frontend and deployment work remain future milestones.
 
 ## Tech stack
 
@@ -32,7 +40,13 @@ Create a local environment file:
 cp .env.example .env
 ```
 
-SettleUp uses Plaid Sandbox to retrieve bank transaction data. Create a Plaid Sandbox account and add its client ID and secret to `.env` before using the bank connection features. Each local setup needs its own credentials.
+Generate a JWT signing secret and add it to `.env`:
+
+```bash
+openssl rand -base64 48
+```
+
+Plaid-backed bank connection features begin in Phase 6. Before working on those features, create a Plaid Sandbox account and add its client ID and secret to `.env`. Each local setup needs its own credentials.
 
 Start PostgreSQL and the backend:
 
@@ -43,6 +57,23 @@ cd backend
 ```
 
 The health endpoint is available at <http://localhost:8080/actuator/health>. API documentation is available at <http://localhost:8080/swagger-ui.html>.
+
+Register or sign in to receive an access token:
+
+```bash
+curl -X POST http://localhost:8080/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"you@example.com","displayName":"Your Name","password":"a-long-password"}'
+```
+
+Send the returned token as `Authorization: Bearer <accessToken>` when calling protected endpoints. User identity is taken from the token; protected endpoints do not accept a `userId` query parameter.
+
+The current API supports:
+
+- account registration, login, and the authenticated user profile
+- group creation, listing, membership management, and role-based administration
+- expense creation and deletion with equal, exact, or percentage splits
+- group balances, suggested settlement transfers, and recorded settlements
 
 ## Commands
 

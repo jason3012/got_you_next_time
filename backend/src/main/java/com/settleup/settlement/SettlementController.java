@@ -1,5 +1,6 @@
 package com.settleup.settlement;
 
+import com.settleup.auth.AuthenticatedUser;
 import com.settleup.settlement.dto.BalanceResponse;
 import com.settleup.settlement.dto.RecordSettlementRequest;
 import com.settleup.settlement.dto.SettlementResponse;
@@ -7,12 +8,13 @@ import com.settleup.settlement.dto.TransferResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,22 +31,22 @@ public class SettlementController {
     }
 
     @GetMapping("/balances")
-    public List<BalanceResponse> balances(@PathVariable UUID groupId, @RequestParam UUID userId) {
-        return settlementService.balances(groupId, userId);
+    public List<BalanceResponse> balances(@PathVariable UUID groupId, @AuthenticationPrincipal Jwt jwt) {
+        return settlementService.balances(groupId, AuthenticatedUser.id(jwt));
     }
 
     @GetMapping("/settle-up")
-    public List<TransferResponse> plan(@PathVariable UUID groupId, @RequestParam UUID userId) {
-        return settlementService.plan(groupId, userId);
+    public List<TransferResponse> plan(@PathVariable UUID groupId, @AuthenticationPrincipal Jwt jwt) {
+        return settlementService.plan(groupId, AuthenticatedUser.id(jwt));
     }
 
     @PostMapping("/settlements")
     public ResponseEntity<SettlementResponse> record(
             @PathVariable UUID groupId,
-            @RequestParam UUID userId,
+            @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody RecordSettlementRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(settlementService.record(groupId, userId, request));
+                .body(settlementService.record(groupId, AuthenticatedUser.id(jwt), request));
     }
 }

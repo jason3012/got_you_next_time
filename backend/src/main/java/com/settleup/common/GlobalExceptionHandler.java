@@ -3,6 +3,7 @@ package com.settleup.common;
 import com.settleup.common.exception.ConflictException;
 import com.settleup.common.exception.ForbiddenException;
 import com.settleup.common.exception.NotFoundException;
+import com.settleup.common.exception.UnauthorizedException;
 import com.settleup.common.exception.ValidationException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ApiError> handleForbidden(ForbiddenException exception) {
         return response(HttpStatus.FORBIDDEN, "FORBIDDEN", exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiError> handleUnauthorized(UnauthorizedException exception) {
+        return response(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", exception.getMessage(), Map.of());
     }
 
     @ExceptionHandler({ValidationException.class, ConstraintViolationException.class})

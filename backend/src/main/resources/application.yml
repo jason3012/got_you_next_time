@@ -19,3 +19,9 @@ management:
     web:
       exposure:
         include: health,info
+
+security:
+  jwt:
+    issuer: settleup-api
+    ttl: PT1H
+    secret: ${JWT_SECRET}
