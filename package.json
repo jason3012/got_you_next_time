@@ -13,6 +13,9 @@
     "update": "npm run update:tooling && npm run update:dependencies",
     "update:tooling": "brew update && brew bundle --file=Brewfile --upgrade",
     "update:dependencies": "./scripts/update-dependencies.sh",
-    "dependencies:check": "./scripts/check-dependency-updates.sh"
+    "dependencies:check": "./scripts/check-dependency-updates.sh",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:lint": "npm --prefix frontend run lint"
   }
 }

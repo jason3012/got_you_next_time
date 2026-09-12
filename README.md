@@ -4,13 +4,15 @@ SettleUp is an expense-sharing application for friend groups. It will connect to
 
 ## Project status
 
-Phase 5 is complete. The project currently has a working backend for the full manual expense-sharing flow:
+Phase 6 is complete and Phase 7 is in progress. The project has a working backend for manual and bank-connected expense sharing:
 
 - Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
 - Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
 - Phase 5: account registration and login, BCrypt password hashing, signed JWT access tokens, authenticated user identity, and protected APIs
+- Phase 6: Plaid Link, encrypted bank credentials, account discovery, cursor-based transaction sync, verified webhooks, and transaction-to-expense conversion
+- Phase 7 (in progress): React, TypeScript, Vite, typed API contracts, routing dependencies, and Plaid Link client support
 
-The next milestone is Phase 6: Plaid Sandbox integration for connecting bank accounts and importing transactions. The React frontend and deployment work remain future milestones.
+The remaining work is the user-facing React experience for authentication, groups, expenses, balances, settlements, bank connections, and imported transactions, followed by deployment work.
 
 ## Tech stack
 
@@ -46,6 +48,12 @@ Generate a JWT signing secret and add it to `.env`:
 openssl rand -base64 48
 ```
 
+Generate a separate key for encrypting Plaid access tokens:
+
+```bash
+openssl rand -base64 32
+```
+
 Plaid-backed bank connection features begin in Phase 6. Before working on those features, create a Plaid Sandbox account and add its client ID and secret to `.env`. Each local setup needs its own credentials.
 
 Start PostgreSQL and the backend:
@@ -74,6 +82,16 @@ The current API supports:
 - group creation, listing, membership management, and role-based administration
 - expense creation and deletion with equal, exact, or percentage splits
 - group balances, suggested settlement transfers, and recorded settlements
+- Plaid Link tokens, bank connections, transaction synchronization, and importing transactions as expenses
+
+Install and run the frontend during development:
+
+```bash
+npm install --prefix frontend
+npm run frontend:dev
+```
+
+The frontend uses <http://localhost:5173> and connects to the API at <http://localhost:8080> by default. Set `VITE_API_URL` when the backend is hosted elsewhere.
 
 ## Commands
 
@@ -82,6 +100,9 @@ npm run phase0:check        # Check local tools
 npm run update              # Update tooling and project dependencies
 npm run update:tooling      # Update Homebrew-managed tools
 npm run update:dependencies # Update backend and frontend dependencies
+npm run frontend:dev        # Start the React development server
+npm run frontend:build      # Type-check and build the frontend
+npm run frontend:lint       # Type-check the frontend
 ```
 
 Review dependency changes and run tests before committing an update.

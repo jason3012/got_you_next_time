@@ -25,3 +25,13 @@ security:
     issuer: settleup-api
     ttl: PT1H
     secret: ${JWT_SECRET}
+  token-encryption-key: ${TOKEN_ENCRYPTION_KEY}
+
+plaid:
+  client-id: ${PLAID_CLIENT_ID:}
+  secret: ${PLAID_SECRET:}
+  environment: ${PLAID_ENV:sandbox}
+  webhook-url: ${PLAID_WEBHOOK_URL:}
+
+app:
+  frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}

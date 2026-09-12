@@ -1,5 +1,6 @@
 package com.settleup.common;
 
+import com.settleup.bank.PlaidApiException;
 import com.settleup.common.exception.ConflictException;
 import com.settleup.common.exception.ForbiddenException;
 import com.settleup.common.exception.NotFoundException;
@@ -45,6 +46,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ApiError> handleConflict(ConflictException exception) {
         return response(HttpStatus.CONFLICT, "CONFLICT", exception.getMessage(), Map.of());
+    }
+
+    @ExceptionHandler(PlaidApiException.class)
+    public ResponseEntity<ApiError> handlePlaid(PlaidApiException exception) {
+        return response(HttpStatus.BAD_GATEWAY, exception.getErrorCode(), exception.getMessage(), Map.of());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

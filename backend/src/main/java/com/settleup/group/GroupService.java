@@ -72,10 +72,11 @@ public class GroupService {
     @Transactional
     public GroupResponse addMember(UUID groupId, UUID actingUserId, AddGroupMemberRequest request) {
         Group group = requireAdmin(groupId, actingUserId).getGroup();
-        if (groupMemberRepository.existsByGroupIdAndUserId(groupId, request.userId())) {
+        User user = userRepository.findByEmailIgnoreCase(request.email().trim())
+                .orElseThrow(() -> new NotFoundException("No account was found for this email"));
+        if (groupMemberRepository.existsByGroupIdAndUserId(groupId, user.getId())) {
             throw new ConflictException("User is already a member of this group");
         }
-        User user = requireUser(request.userId());
         groupMemberRepository.saveAndFlush(new GroupMember(group, user, request.role()));
         return toResponse(group);
     }
