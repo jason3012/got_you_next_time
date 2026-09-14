@@ -29,3 +29,4 @@ frontend/dist/
 !.agents/**/*.md
 !.impeccable/**/*.md
 !docs/settlement-algorithm.md
+.vercel

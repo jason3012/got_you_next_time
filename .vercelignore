@@ -1,0 +1,14 @@
+.agents/
+.codex/
+.impeccable/
+backend/
+docs/
+scripts/
+.env
+.env.*
+!.env.example
+frontend/node_modules/
+frontend/dist/
+target/
+docker-compose.yml
+Brewfile

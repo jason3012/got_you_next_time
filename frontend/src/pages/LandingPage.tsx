@@ -5,14 +5,17 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowRight, Landmark, ReceiptText, Users } from 'lucide-react'
 import { DrawablyButton, DrawablyDivider, DrawablyUnderline } from 'drawably/react'
-import paperTexture from '../../../assets/plates/paper-texture.png'
-import upperMapMarks from '../../../assets/plates/upper-map-marks.png'
-import jamieStory from '../../../assets/plates/jamie-story.png'
-import noorStory from '../../../assets/plates/noor-story.png'
-import eliStory from '../../../assets/plates/eli-story.png'
-import routeConvergence from '../../../assets/plates/route-convergence.png'
-import groupMarker from '../../../assets/plates/group-marker.png'
-import trailSign from '../../../assets/plates/trail-sign.png'
+
+const platePath = (name: string) => `/assets/plates/${name}.png`
+
+const paperTexture = platePath('paper-texture')
+const upperMapMarks = platePath('upper-map-marks')
+const jamieStory = platePath('jamie-story')
+const noorStory = platePath('noor-story')
+const eliStory = platePath('eli-story')
+const routeConvergence = platePath('route-convergence')
+const groupMarker = platePath('group-marker')
+const trailSign = platePath('trail-sign')
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 

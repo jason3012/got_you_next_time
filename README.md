@@ -93,6 +93,17 @@ npm run frontend:dev
 
 The frontend uses <http://localhost:5173> and connects to the API at <http://localhost:8080> by default. Set `VITE_API_URL` when the backend is hosted elsewhere.
 
+## Vercel deployment
+
+The repository-level `vercel.json` deploys the Vite application in `frontend/` and preserves client-side routes with an SPA fallback.
+
+```bash
+npx vercel        # preview deployment
+npx vercel --prod # production deployment
+```
+
+The public landing experience works as a standalone Vercel deployment. Before enabling authentication, transactions, groups, and settlements in production, host the Spring Boot API and PostgreSQL separately and set `VITE_API_URL` in the Vercel project to that API's public HTTPS URL.
+
 ## Commands
 
 ```bash

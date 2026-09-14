@@ -24,10 +24,6 @@
     "react-router-dom": "7.18.3"
   },
   "devDependencies": {
-    "@esbuild/darwin-arm64": "^0.28.2",
-    "@esbuild/darwin-x64": "^0.28.2",
-    "@rollup/rollup-darwin-arm64": "^4.63.2",
-    "@rollup/rollup-darwin-x64": "^4.63.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.2",
