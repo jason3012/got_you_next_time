@@ -1,0 +1,6 @@
+Use case: precise-object-edit
+Asset type: approved mobile landing page UI comp
+Primary request: Replace only the three circular photographic avatar portraits for Jamie, Noor, and Eli with simple, charming comic-style head illustrations drawn in the same graphite-and-ink line language as the pizza, drink, gas, mountain, tree, and map illustrations already on the page.
+Invariants: keep the entire composition, dimensions, crop, cream paper background, serif headline, header, button, all exact text, all amounts, all names, all map routes, arrows, landmarks, label placements, colors, spacing, and hierarchy unchanged. Keep each avatar's position, circular boundary, approximate head pose, and visual diversity. Change only the inner portrait artwork of the three avatar circles.
+Style for the new heads: minimal hand-drawn editorial comic portraits, clean black graphite contour lines, very sparse crosshatching, flat cream/sage/terracotta touches, friendly and individual without photoreal skin, glossy rendering, or AI portrait cues.
+Constraints: no added or removed text, no changed spelling, no new objects, no layout drift, no photorealism in avatars, no watermark.

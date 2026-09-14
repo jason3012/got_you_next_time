@@ -1,0 +1,30 @@
+{
+  "regions": [
+    {"id":"paper-texture","kind":"texture","grid":"F0:G0","note":"clean warm cream fibrous sketch paper with no ink"},
+    {"id":"wordmark","kind":"text","grid":"A0:C0","note":"SettleUp editorial serif wordmark"},
+    {"id":"sign-in","kind":"control","grid":"H0:I0","note":"Sign in text action"},
+    {"id":"menu","kind":"control","grid":"J0:J0","note":"three graphite horizontal menu strokes"},
+    {"id":"headline","kind":"text","grid":"A1:H1","note":"two-line headline We get each other next time in large black editorial serif"},
+    {"id":"subhead","kind":"text","grid":"A2:G2","note":"Start with what actually happened in clean dark sans-serif"},
+    {"id":"connect-action","kind":"control","grid":"A2:G3","note":"large terracotta rounded Connect a bank button with right arrow"},
+    {"id":"upper-map","kind":"plate","grid":"G1:J3","note":"transparent graphite mountain ridge and sparse pine field-journal drawing with no text"},
+    {"id":"jamie-map","kind":"plate","grid":"A3:D7","note":"transparent field-journal plate: simple comic graphite head in a circle, pizza slice, torn paper slips without text, trees, lake edge, and terracotta dotted route converging downward"},
+    {"id":"noor-map","kind":"plate","grid":"D3:G7","note":"transparent field-journal plate: simple comic graphite head in a circle, drinks and stacked plates, torn paper slips without text, sparse trees, and terracotta dotted route converging downward"},
+    {"id":"eli-map","kind":"plate","grid":"G3:J7","note":"transparent field-journal plate: simple comic graphite head in a circle, gas pump, torn paper slips without text, mountains, river and bridge, and terracotta dotted route converging downward"},
+    {"id":"jamie-name","kind":"text","grid":"A4:C4","note":"handwritten Jamie label"},
+    {"id":"jamie-item","kind":"text","grid":"A5:C5","note":"Luna Pizza label"},
+    {"id":"jamie-amount","kind":"text","grid":"A5:C6","note":"exact amount $84.20 in bold dark sans-serif"},
+    {"id":"noor-name","kind":"text","grid":"D4:F4","note":"handwritten Noor label"},
+    {"id":"noor-item","kind":"text","grid":"D5:G6","note":"Drinks + plates label"},
+    {"id":"noor-amount","kind":"text","grid":"D6:G6","note":"exact amount $46.80 in bold dark sans-serif"},
+    {"id":"eli-name","kind":"text","grid":"H4:J4","note":"handwritten Eli label"},
+    {"id":"eli-item","kind":"text","grid":"G5:J6","note":"Gas + utilities label"},
+    {"id":"eli-amount","kind":"text","grid":"H6:J6","note":"exact amount $112.40 in bold dark sans-serif"},
+    {"id":"group-marker","kind":"plate","grid":"D7:G9","note":"transparent plate with sage circular friend-group symbol, torn paper label without text, terracotta dotted trail continuing downward, and a few graphite trees"},
+    {"id":"group-label","kind":"text","grid":"D8:G8","note":"The group evens out on torn paper"},
+    {"id":"lower-left-map","kind":"plate","grid":"A7:E9","note":"transparent graphite lake, sailboat, pine trees, lower mountains and torn-paper edge with no text"},
+    {"id":"lower-right-map","kind":"plate","grid":"F7:J9","note":"transparent graphite river, bridge, pine trees, lower mountains and torn-paper edge with no text"},
+    {"id":"trail-sign","kind":"plate","grid":"H8:J9","note":"transparent hand-drawn wooden direction sign and downward arrow with blank sign face"},
+    {"id":"trail-label","kind":"text","grid":"H8:J9","note":"handwritten Follow the trail label"}
+  ]
+}

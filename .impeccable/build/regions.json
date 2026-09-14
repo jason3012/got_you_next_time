@@ -1,0 +1,27 @@
+{
+  "regions": [
+    { "id": "paper-texture", "kind": "texture", "grid": "D0:F0", "note": "clean warm cream paper grain sample" },
+    { "id": "brand", "kind": "text", "grid": "A0:C0", "note": "SettleUp serif wordmark" },
+    { "id": "sign-in", "kind": "text", "grid": "H0:I0", "note": "Sign in navigation label" },
+    { "id": "menu", "kind": "control", "grid": "J0:J0", "note": "three horizontal graphite menu strokes" },
+    { "id": "header-rule", "kind": "chrome", "grid": "A0:J0", "note": "thin graphite divider below header" },
+    { "id": "headline", "kind": "text", "grid": "A1:H1", "note": "large editorial serif headline We get each other next time" },
+    { "id": "subhead", "kind": "text", "grid": "A2:G2", "note": "sans-serif sentence Start with what actually happened" },
+    { "id": "connect-bank", "kind": "control", "grid": "A2:G3", "note": "terracotta Connect a bank button with arrow" },
+    { "id": "upper-map-marks", "kind": "plate", "grid": "H2:J3", "note": "sparse graphite mountain and dashed trail doodles transparent cutout" },
+    { "id": "jamie-story", "kind": "plate", "grid": "A2:C6", "note": "minimal comic Jamie head pizza doodle blank paper slips and terracotta route without text" },
+    { "id": "jamie-name", "kind": "text", "grid": "A4:C4", "note": "handwritten Jamie name on first blank slip" },
+    { "id": "jamie-purchase", "kind": "text", "grid": "A5:C6", "note": "Luna Pizza and 84.20 dollar purchase block on second slip" },
+    { "id": "noor-story", "kind": "plate", "grid": "D4:F6", "note": "minimal comic Noor head drinks and plates doodle blank paper slips and terracotta route without text" },
+    { "id": "noor-name", "kind": "text", "grid": "D4:F5", "note": "handwritten Noor name on first blank slip" },
+    { "id": "noor-purchase", "kind": "text", "grid": "D5:F6", "note": "Drinks plus plates and 46.80 dollar purchase block on second slip" },
+    { "id": "eli-story", "kind": "plate", "grid": "H3:J6", "note": "minimal comic Eli head gas pump doodle blank paper slips and terracotta route without text" },
+    { "id": "eli-name", "kind": "text", "grid": "H4:J4", "note": "handwritten Eli name on first blank slip" },
+    { "id": "eli-purchase", "kind": "text", "grid": "G5:J6", "note": "Gas plus utilities and 112.40 dollar purchase block on second slip" },
+    { "id": "route-convergence", "kind": "plate", "grid": "A6:J9", "note": "three terracotta paths converging and sparse graphite map marks transparent cutout without labels" },
+    { "id": "group-marker", "kind": "plate", "grid": "D7:G8", "note": "sage circular friend group doodle and blank paper label transparent cutout" },
+    { "id": "group-copy", "kind": "text", "grid": "D7:G8", "note": "The group evens out handwritten label below friend group marker" },
+    { "id": "trail-sign", "kind": "plate", "grid": "H8:J9", "note": "minimal graphite wooden sign with blank face and down arrow transparent cutout" },
+    { "id": "trail-copy", "kind": "text", "grid": "H8:J9", "note": "Follow the trail handwritten label on wooden sign" }
+  ]
+}

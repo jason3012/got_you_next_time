@@ -1,0 +1,1 @@
+Origin: clean raw 282x167 paper-texture patch cropped from the user-approved comp `.impeccable/mocks/landing-option-2.webp`, then assembled as a 2x2 mirror tile (original, horizontal mirror, vertical mirror, horizontal+vertical mirror) into a seamless 564x334 warm cream paper texture. No generated content, no text, and no UI elements.

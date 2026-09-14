@@ -1,0 +1,102 @@
+{
+  "title": "Choose SettleUp's visual world",
+  "question": "Your sketchbook brief leads. Lock it, choose a close alternate, or re-roll the open structural details.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Shared Ledger Study",
+      "kicker": "THE CONCEPT",
+      "lineage": "industrial-design sketchbooks crossed with annotated bank ledgers",
+      "thesis": "A real bank charge becomes a shared agreement on the same sheet where the friend group gathers.",
+      "palette": ["#F2EDE2", "#242321", "#D57B4E", "#ABA784"],
+      "materials": ["graphite line", "ink annotation", "paper tooth", "restrained crosshatch"],
+      "viewport": "A portrait phone fills the opening frame with one real transaction under review; scrolling pulls the camera back until it becomes one of six phones arranged in a connected circle.",
+      "risk": "The drawn language must never make amounts, status, or actions feel approximate.",
+      "raised": [
+        {"from": "the cutting bench", "raise": "The scroll sequence has discrete, legible transaction beats instead of decorative drift."},
+        {"from": "paper automata", "raise": "Every connector and rotation reads as a physical joint with tension and purpose."},
+        {"from": "high-density utility", "raise": "The signed-in screens preserve compact information hierarchy beneath the expressive landing story."}
+      ],
+      "comp": ".impeccable/mocks/decision/assigned.webp"
+    },
+    {
+      "id": "model-pick",
+      "label": "The Field Note Constellation",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "naturalist field journals and hand-plotted social maps",
+      "thesis": "Transactions are observed specimens; the friend group is the map that gives each one meaning.",
+      "palette": ["#EEE8DA", "#292824", "#B86B45", "#8F9278"],
+      "materials": ["soft pencil", "map symbols", "specimen labels", "folded paper"],
+      "viewport": "A bank charge is pinned like a field specimen beside a hand-plotted group map; the scroll traces its path from account to friends to settled balance.",
+      "risk": "Its familiar notebook metaphor is clear but less singular than the phone-circle ritual.",
+      "comp": ".impeccable/mocks/decision/model-pick.webp"
+    },
+    {
+      "id": "challenger-paper",
+      "label": "The Paper Phone Circle",
+      "verdict": "competitive",
+      "lineage": "hand-cranked paper automata and pinned mechanical toys",
+      "thesis": "Each phone is a jointed paper figure; one scroll-crank assembles the group and passes a transaction around it.",
+      "palette": ["#E9E0CD", "#34322F", "#B3473F", "#B6AD91"],
+      "materials": ["cut paper", "kraft fiber", "charcoal shadow", "visible tabs and pins"],
+      "viewport": "A cut-paper phone stands alone above a small crank line; scrolling turns the crank and unfolds a ring of connected phones around the shared charge.",
+      "case": "It identifies strongly with the group ritual and makes the motion physical, but the cut-paper vocabulary communicates bank data less directly than the ledger study.",
+      "risk": "Too much dimensional craft could make a trustworthy finance workflow feel toy-like.",
+      "comp": ".impeccable/mocks/decision/challenger-paper.webp",
+      "hero": "https://impeccable.style/worlds/cards/kinetic-sculpture-automata-crank-paper-menagerie-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/kinetic-sculpture-automata-crank-paper-menagerie.webp"
+    },
+    {
+      "id": "challenger-cutting",
+      "label": "Transaction Cutting Bench",
+      "verdict": "declined",
+      "lineage": "film editing workprints and pinned trims",
+      "thesis": "Imported charges move through a perforated review strip and completed splits receive grease-pencil marks.",
+      "palette": ["#E9E1D3", "#282624", "#D57B4E"],
+      "materials": ["film grain", "grease pencil", "paper tape"],
+      "viewport": "A horizontal transaction strip scrubs beneath a fixed review frame.",
+      "case": "The sequential review is useful, but the editing ritual does not identify with friend groups.",
+      "kept": "Discrete scroll beats and a visible place marker keep the story understandable.",
+      "risk": "The film metaphor competes with the bank-to-group mechanism."
+    },
+    {
+      "id": "challenger-density",
+      "label": "Dense Utility Mosaic",
+      "verdict": "declined",
+      "lineage": "Japanese high-density service interfaces",
+      "thesis": "Accounts, charges, groups, and balances tile into a rigorous mobile information mosaic.",
+      "palette": ["#F2EDE2", "#252421", "#D57B4E", "#ABA784"],
+      "materials": ["hairline rules", "tiny labels", "compact modules"],
+      "viewport": "The first phone shows a dense live bank feed with one transaction already routed to friends.",
+      "case": "It protects product clarity but loses the spacious, idea-driven group ritual requested for the landing page.",
+      "kept": "Compact hierarchy governs the signed-in application rather than the expressive landing sequence.",
+      "risk": "Density can feel administrative during a casual social task."
+    },
+    {
+      "id": "challenger-ascii",
+      "label": "Glyph Circle",
+      "verdict": "declined",
+      "lineage": "live ASCII scenes and character-grid rendering",
+      "thesis": "The phone circle resolves from transaction symbols as the visitor changes viewing distance.",
+      "palette": ["#F2EDE2", "#242321", "#D57B4E"],
+      "materials": ["typed glyphs", "fixed character grid", "ink density"],
+      "viewport": "A close-up amount becomes a complete social diagram when the glyph field zooms out.",
+      "case": "Distance-based revelation is strong, but a strict character grid conflicts with the human hand-drawn brief.",
+      "kept": "The composition must read differently—and meaningfully—at close, middle, and distant scales.",
+      "risk": "It codes the product as technical rather than social."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "comp", "toggle": true},
+  "canon": true,
+  "canonCard": {
+    "label": "The polished finance-app standard",
+    "thesis": "A clean bank feed, friendly avatars, balance cards, and a familiar product screenshot hero.",
+    "palette": ["#F7F4EE", "#1F2933", "#D57B4E", "#ABA784"],
+    "materials": ["clean grid", "soft surfaces", "standard product mockups"],
+    "viewport": "A concise headline and CTA sit beside a polished phone showing imported transactions and group balances.",
+    "risk": "Immediately understandable, but visually interchangeable with other finance products.",
+    "comp": ".impeccable/mocks/decision/canon.webp"
+  },
+  "steer": true
+}

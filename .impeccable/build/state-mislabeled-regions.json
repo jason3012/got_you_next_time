@@ -1,0 +1,553 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-13T20:22:51.438Z",
+  "comp": ".impeccable/mocks/landing-option-2.webp",
+  "direction": "593481e4",
+  "breakpoint": "940x1672",
+  "artifact": null,
+  "phase": "hero",
+  "phases": {
+    "comps": {
+      "status": "closed",
+      "openedAt": "2026-09-13T20:22:51.438Z",
+      "closedAt": "2026-09-13T20:34:24.153Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "3 comps, 1 approved",
+        "approved": ".impeccable/mocks/landing-option-2.webp",
+        "at": "2026-09-13T20:34:24.152Z"
+      },
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-13T20:34:24.340Z",
+      "closedAt": "2026-09-13T20:45:20.399Z",
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "26 regions, 8 plates, 15 text regions measured",
+        "at": "2026-09-13T20:45:20.398Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "closed",
+      "openedAt": "2026-09-13T20:45:20.399Z",
+      "closedAt": "2026-09-14T00:34:09.369Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "8/8 plates",
+        "at": "2026-09-14T00:34:09.368Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "open",
+      "openedAt": "2026-09-14T00:34:09.369Z",
+      "closedAt": null,
+      "attempts": 8,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "region jamie-item (text) is contradicted (structure 41%, detail added 25%): the composition of this text region differs from the comp; re-derive it from the spec box",
+          "region jamie-amount (text) is contradicted (structure 36%, detail added 24%): the composition of this text region differs from the comp; re-derive it from the spec box",
+          "region eli-amount (text) is contradicted (structure 45%, detail added 36%): the composition of this text region differs from the comp; re-derive it from the spec box",
+          "region group-label (text) is contradicted (structure 42%, detail added 40%): the composition of this text region differs from the comp; re-derive it from the spec box",
+          "region trail-label (text) is contradicted (structure 39%, detail added 30%): the composition of this text region differs from the comp; re-derive it from the spec box",
+          "plate jamie-story is clipped at the bottom: the comp's artwork keeps a margin there (ink box 243x826 at 39,0 in the region) and the build's runs to the edge (235x788 at 47,48); size the box to the artwork's aspect and use object-fit: contain, or place the <img> at the artwork's own size, never cover on a narrower box",
+          "plate noor-story is clipped at the top: the comp's artwork keeps a margin there (ink box 267x481 at 1,21 in the region) and the build's runs to the edge (211x497 at 51,0); size the box to the artwork's aspect and use object-fit: contain, or place the <img> at the artwork's own size, never cover on a narrower box",
+          "plate group-marker is clipped at the left and right: the comp's artwork keeps a margin there (ink box 257x334 at 67,0 in the region) and the build's runs to the edge (375x330 at 1,4); size the box to the artwork's aspect and use object-fit: contain, or place the <img> at the artwork's own size, never cover on a narrower box",
+          "plate trail-sign is clipped at the top: the comp's artwork keeps a margin there (ink box 232x238 at 23,73 in the region) and the build's runs to the edge (233x307 at 9,0); size the box to the artwork's aspect and use object-fit: contain, or place the <img> at the artwork's own size, never cover on a narrower box"
+        ],
+        "summary": "hero 74% (drift)",
+        "score": 0.7449,
+        "verdict": "drift",
+        "report": ".impeccable/review/diff/hero/report.json",
+        "sideBySide": "/Users/jasonjung/Downloads/Projects/settleUp/.impeccable/review/diff/hero/side-by-side.png",
+        "worst": [
+          "jamie-amount contradicted 39%",
+          "trail-label contradicted 45%",
+          "jamie-item contradicted 49%"
+        ],
+        "worstIds": [
+          "jamie-amount",
+          "trail-label",
+          "jamie-item"
+        ],
+        "worstCrops": [
+          {
+            "id": "jamie-amount",
+            "verdict": "contradicted",
+            "score": {
+              "overall": 0.3942,
+              "structure": 0.364,
+              "color": 0.7616,
+              "colorIntersection": 0.5201,
+              "paletteMatch": 0.8916,
+              "detail": 0.1455,
+              "detailRaw": 0.2653,
+              "detailAdded": 0.2396,
+              "bands": 0
+            },
+            "file": ".impeccable/review/diff/hero/regions/jamie-amount.png"
+          },
+          {
+            "id": "trail-label",
+            "verdict": "contradicted",
+            "score": {
+              "overall": 0.4497,
+              "structure": 0.3924,
+              "color": 0.7939,
+              "colorIntersection": 0.6039,
+              "paletteMatch": 0.8962,
+              "detail": 0.1777,
+              "detailRaw": 0.3288,
+              "detailAdded": 0.3021,
+              "bands": 0.2833
+            },
+            "file": ".impeccable/review/diff/hero/regions/trail-label.png"
+          },
+          {
+            "id": "jamie-item",
+            "verdict": "contradicted",
+            "score": {
+              "overall": 0.485,
+              "structure": 0.4061,
+              "color": 0.7932,
+              "colorIntersection": 0.6083,
+              "paletteMatch": 0.8927,
+              "detail": 0.3245,
+              "detailRaw": 0.4495,
+              "detailAdded": 0.25,
+              "bands": 0.35
+            },
+            "file": ".impeccable/review/diff/hero/regions/jamie-item.png"
+          }
+        ],
+        "advisories": [
+          "(advisory, above the 72% bar) plate noor-story is placed but not at the comp's box: its ink spans 267x480px at (1,21) in the comp region and 211x497px at (51,0) in the build; size and position the <img> to the spec box (object-fit: cover), not to the surrounding layout",
+          "(advisory, above the 72% bar) plate eli-story is placed but not at the comp's box: its ink spans 253x668px at (0,0) in the comp region and 237x666px at (39,2) in the build; size and position the <img> to the spec box (object-fit: cover), not to the surrounding layout",
+          "(advisory, above the 72% bar) plate group-marker is placed but not at the comp's box: its ink spans 257x335px at (67,0) in the comp region and 375x331px at (1,4) in the build; size and position the <img> to the spec box (object-fit: cover), not to the surrounding layout",
+          "(advisory, above the 72% bar) plate trail-sign is placed but not at the comp's box: its ink spans 232x238px at (23,73) in the comp region and 233x307px at (9,0) in the build; size and position the <img> to the spec box (object-fit: cover), not to the surrounding layout",
+          "(advisory, above the 72% bar; fix in the polish pass before responsive) 8 readings:",
+          "  text eli-item: letter-spacing is wider than the comp's (gap 0.140 vs 0.078 of the cap height); set letter-spacing to close it by about 2px",
+          "  text eli-item: the face renders 41% lighter than the comp's (ink density 0.30 vs 0.50); raise a weight step or use the ranked face",
+          "  text jamie-name: ink is #a8a780 in the build, #15110b in the comp; use the comp's colour",
+          "  text eli-name: ink is #a8a888 in the build, #201616 in the comp; use the comp's colour",
+          "  text eli-item: ink is #1d1918 in the build, #b16441 in the comp; use the comp's colour",
+          "  text group-label: ink is #89876a in the build, #f4eadb in the comp; use the comp's colour",
+          "  text trail-label: ink is #5f5753 in the build, #b8b2a7 in the comp; use the comp's colour",
+          "  text eli-item: it starts 97px further right than in the comp",
+          "(advisory, unchanged for 3+ attempts) text noor-name: ink is #a9a885 in the build, #221b18 in the comp; use the comp's colour"
+        ],
+        "regionVerdicts": {
+          "paper-texture": "drift",
+          "brand": "drift",
+          "sign-in": "drift",
+          "menu": "drift",
+          "header-rule": "drift",
+          "headline": "drift",
+          "subhead": "drift",
+          "connect-bank": "drift",
+          "upper-map-marks": "drift",
+          "jamie-story": "drift",
+          "jamie-name": "drift",
+          "jamie-item": "contradicted",
+          "jamie-amount": "contradicted",
+          "noor-story": "drift",
+          "noor-name": "drift",
+          "noor-item": "drift",
+          "noor-amount": "drift",
+          "eli-story": "drift",
+          "eli-name": "drift",
+          "eli-item": "drift",
+          "eli-amount": "contradicted",
+          "route-convergence": "drift",
+          "group-marker": "drift",
+          "group-label": "contradicted",
+          "trail-sign": "drift",
+          "trail-label": "contradicted"
+        },
+        "at": "2026-09-14T00:59:54.331Z"
+      },
+      "forced": null,
+      "records": 2,
+      "readingsSeen": {
+        "text subhead: ink is #423f31 in the build, #f4e9da in the comp; use the comp's colour": 1,
+        "text jamie-name: ink is #493e32 in the build, #15110b in the comp; use the comp's colour": 1,
+        "text noor-name: ink is #968a7c in the build, #221b18 in the comp; use the comp's colour": 1,
+        "text group-label: ink is #afa89a in the build, #f4eadb in the comp; use the comp's colour": 1,
+        "text jamie-item: letter-spacing is wider than the comp's (gap 0.189 vs 0.102 of the cap height); set letter-spacing to close it by about 2px": 1,
+        "text eli-item: letter-spacing is wider than the comp's (gap 0.170 vs 0.078 of the cap height); set letter-spacing to close it by about 3px": 1,
+        "text eli-amount: cap height 18px in the build, 23.3px in the comp (-23%); set font-size so the cap height renders at 23.3px": 2,
+        "text noor-name: ink is #a8a785 in the build, #221b18 in the comp; use the comp's colour": 1,
+        "text eli-name: ink is #a9a989 in the build, #201616 in the comp; use the comp's colour": 4,
+        "text eli-item: ink is #1d1a19 in the build, #b16441 in the comp; use the comp's colour": 1,
+        "text group-label: ink is #89876a in the build, #f4eadb in the comp; use the comp's colour": 2,
+        "text trail-label: ink is #1d1b19 in the build, #b8b2a7 in the comp; use the comp's colour": 1,
+        "text eli-item: it starts 79px further right than in the comp": 1,
+        "control connect-bank: its rule sits 9px into the box in the comp and 86px in the build (+77px), so the strip is taller than the comp's; match the height, not only the position": 1,
+        "text eli-item: letter-spacing is wider than the comp's (gap 0.149 vs 0.078 of the cap height); set letter-spacing to close it by about 2px": 1,
+        "text jamie-item: the face renders 31% heavier than the comp's (ink density 0.65 vs 0.49); drop a weight step or use the ranked face": 1,
+        "text noor-name: ink is #a8a885 in the build, #221b18 in the comp; use the comp's colour": 3,
+        "text eli-item: ink is #1d1919 in the build, #b16441 in the comp; use the comp's colour": 1,
+        "text group-label: ink is #888769 in the build, #f4eadb in the comp; use the comp's colour": 1,
+        "text trail-label: ink is #1e1b19 in the build, #b8b2a7 in the comp; use the comp's colour": 3,
+        "text eli-item: it starts 91px further right than in the comp": 6,
+        "text noor-item: cap height 40.8px in the build, 21.3px in the comp (+92%); set font-size so the cap height renders at 21.3px": 1,
+        "text noor-amount: cap height 41.3px in the build, 21.3px in the comp (+94%); set font-size so the cap height renders at 21.3px": 1,
+        "text eli-item: letter-spacing is wider than the comp's (gap 0.147 vs 0.078 of the cap height); set letter-spacing to close it by about 2px": 1,
+        "text jamie-item: the face renders 34% heavier than the comp's (ink density 0.66 vs 0.49); drop a weight step or use the ranked face": 1,
+        "text eli-amount: the face renders 30% heavier than the comp's (ink density 0.61 vs 0.47); drop a weight step or use the ranked face": 1,
+        "text eli-item: ink is #1c1919 in the build, #b16441 in the comp; use the comp's colour": 1,
+        "text group-label: ink is #8c896c in the build, #f4eadb in the comp; use the comp's colour": 1,
+        "text jamie-item: cap height 34.1px in the build, 22.2px in the comp (+54%); set font-size so the cap height renders at 22.2px": 1,
+        "text noor-item: cap height 37.5px in the build, 21.3px in the comp (+76%); set font-size so the cap height renders at 21.3px": 1,
+        "text noor-amount: cap height 37.5px in the build, 21.3px in the comp (+76%); set font-size so the cap height renders at 21.3px": 1,
+        "text eli-item: letter-spacing is wider than the comp's (gap 0.188 vs 0.078 of the cap height); set letter-spacing to close it by about 3px": 1,
+        "text jamie-item: 1 line in the build, 2 in the comp; the measure (max-width, font-size, letter-spacing) wraps it differently, so the block is a different shape": 3,
+        "text noor-item: 1 line in the build, 2 in the comp; the measure (max-width, font-size, letter-spacing) wraps it differently, so the block is a different shape": 1,
+        "text noor-amount: 1 line in the build, 2 in the comp; the measure (max-width, font-size, letter-spacing) wraps it differently, so the block is a different shape": 1,
+        "text eli-item: ink is #1d1918 in the build, #b16441 in the comp; use the comp's colour": 2,
+        "text group-label: ink is #898869 in the build, #f4eadb in the comp; use the comp's colour": 2,
+        "text jamie-item: cap height 13.4px in the build, 22.2px in the comp (-40%); set font-size so the cap height renders at 22.2px": 1,
+        "text eli-item: letter-spacing is wider than the comp's (gap 0.161 vs 0.078 of the cap height); set letter-spacing to close it by about 2px": 3,
+        "text noor-name: ink is #a9a885 in the build, #221b18 in the comp; use the comp's colour": 4,
+        "text eli-name: ink is #aaa98a in the build, #201616 in the comp; use the comp's colour": 3,
+        "text eli-item: ink is #1c1918 in the build, #b16441 in the comp; use the comp's colour": 3,
+        "text trail-label: ink is #1f1c19 in the build, #b8b2a7 in the comp; use the comp's colour": 2,
+        "text jamie-name: ink is #a8a781 in the build, #15110b in the comp; use the comp's colour": 2,
+        "text group-label: ink is #ab5d3b in the build, #f4eadb in the comp; use the comp's colour": 1,
+        "text jamie-item: cap height 13px in the build, 22.2px in the comp (-41%); set font-size so the cap height renders at 22.2px": 1,
+        "text group-label: ink is #95917b in the build, #f4eadb in the comp; use the comp's colour": 1,
+        "text trail-label: ink is #201c19 in the build, #b8b2a7 in the comp; use the comp's colour": 1,
+        "text eli-item: letter-spacing is wider than the comp's (gap 0.140 vs 0.078 of the cap height); set letter-spacing to close it by about 2px": 1,
+        "text eli-item: the face renders 41% lighter than the comp's (ink density 0.30 vs 0.50); raise a weight step or use the ranked face": 1,
+        "text jamie-name: ink is #a8a780 in the build, #15110b in the comp; use the comp's colour": 1,
+        "text eli-name: ink is #a8a888 in the build, #201616 in the comp; use the comp's colour": 1,
+        "text trail-label: ink is #5f5753 in the build, #b8b2a7 in the comp; use the comp's colour": 1,
+        "text eli-item: it starts 97px further right than in the comp": 1
+      },
+      "history": [
+        {
+          "at": "2026-09-14T00:53:50.863Z",
+          "score": 0.734,
+          "worstIds": [
+            "eli-amount",
+            "group-label",
+            "menu"
+          ],
+          "regionVerdicts": {
+            "paper-texture": "drift",
+            "brand": "drift",
+            "sign-in": "drift",
+            "menu": "contradicted",
+            "header-rule": "drift",
+            "headline": "drift",
+            "subhead": "drift",
+            "connect-bank": "drift",
+            "upper-map-marks": "drift",
+            "jamie-story": "drift",
+            "jamie-name": "drift",
+            "jamie-item": "drift",
+            "jamie-amount": "missing",
+            "noor-story": "drift",
+            "noor-name": "drift",
+            "noor-item": "drift",
+            "noor-amount": "drift",
+            "eli-story": "drift",
+            "eli-name": "drift",
+            "eli-item": "drift",
+            "eli-amount": "contradicted",
+            "route-convergence": "drift",
+            "group-marker": "drift",
+            "group-label": "drift",
+            "trail-sign": "drift",
+            "trail-label": "contradicted"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T00:55:04.095Z",
+          "score": 0.7344,
+          "worstIds": [
+            "menu",
+            "jamie-item",
+            "jamie-amount"
+          ],
+          "regionVerdicts": {
+            "paper-texture": "drift",
+            "brand": "drift",
+            "sign-in": "drift",
+            "menu": "contradicted",
+            "header-rule": "drift",
+            "headline": "drift",
+            "subhead": "drift",
+            "connect-bank": "drift",
+            "upper-map-marks": "drift",
+            "jamie-story": "drift",
+            "jamie-name": "drift",
+            "jamie-item": "contradicted",
+            "jamie-amount": "missing",
+            "noor-story": "drift",
+            "noor-name": "drift",
+            "noor-item": "drift",
+            "noor-amount": "drift",
+            "eli-story": "drift",
+            "eli-name": "drift",
+            "eli-item": "drift",
+            "eli-amount": "drift",
+            "route-convergence": "drift",
+            "group-marker": "drift",
+            "group-label": "contradicted",
+            "trail-sign": "drift",
+            "trail-label": "contradicted"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T00:56:18.797Z",
+          "score": 0.7415,
+          "worstIds": [
+            "menu",
+            "jamie-amount",
+            "group-label"
+          ],
+          "regionVerdicts": {
+            "paper-texture": "drift",
+            "brand": "drift",
+            "sign-in": "drift",
+            "menu": "contradicted",
+            "header-rule": "drift",
+            "headline": "drift",
+            "subhead": "drift",
+            "connect-bank": "drift",
+            "upper-map-marks": "drift",
+            "jamie-story": "drift",
+            "jamie-name": "drift",
+            "jamie-item": "contradicted",
+            "jamie-amount": "missing",
+            "noor-story": "drift",
+            "noor-name": "drift",
+            "noor-item": "drift",
+            "noor-amount": "drift",
+            "eli-story": "drift",
+            "eli-name": "drift",
+            "eli-item": "drift",
+            "eli-amount": "drift",
+            "route-convergence": "drift",
+            "group-marker": "drift",
+            "group-label": "contradicted",
+            "trail-sign": "drift",
+            "trail-label": "contradicted"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T00:57:22.447Z",
+          "score": 0.7466,
+          "worstIds": [
+            "group-label",
+            "jamie-amount",
+            "trail-label"
+          ],
+          "regionVerdicts": {
+            "paper-texture": "drift",
+            "brand": "drift",
+            "sign-in": "drift",
+            "menu": "drift",
+            "header-rule": "drift",
+            "headline": "drift",
+            "subhead": "drift",
+            "connect-bank": "drift",
+            "upper-map-marks": "drift",
+            "jamie-story": "drift",
+            "jamie-name": "drift",
+            "jamie-item": "drift",
+            "jamie-amount": "contradicted",
+            "noor-story": "drift",
+            "noor-name": "drift",
+            "noor-item": "drift",
+            "noor-amount": "drift",
+            "eli-story": "drift",
+            "eli-name": "drift",
+            "eli-item": "drift",
+            "eli-amount": "drift",
+            "route-convergence": "drift",
+            "group-marker": "drift",
+            "group-label": "missing",
+            "trail-sign": "drift",
+            "trail-label": "contradicted"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T00:58:28.665Z",
+          "score": 0.7542,
+          "worstIds": [
+            "jamie-amount",
+            "trail-label",
+            "upper-map-marks"
+          ],
+          "regionVerdicts": {
+            "paper-texture": "drift",
+            "brand": "drift",
+            "sign-in": "drift",
+            "menu": "drift",
+            "header-rule": "drift",
+            "headline": "drift",
+            "subhead": "drift",
+            "connect-bank": "drift",
+            "upper-map-marks": "drift",
+            "jamie-story": "drift",
+            "jamie-name": "drift",
+            "jamie-item": "drift",
+            "jamie-amount": "contradicted",
+            "noor-story": "drift",
+            "noor-name": "drift",
+            "noor-item": "drift",
+            "noor-amount": "drift",
+            "eli-story": "drift",
+            "eli-name": "drift",
+            "eli-item": "drift",
+            "eli-amount": "drift",
+            "route-convergence": "drift",
+            "group-marker": "drift",
+            "group-label": "missing",
+            "trail-sign": "drift",
+            "trail-label": "contradicted"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T00:59:54.331Z",
+          "score": 0.7449,
+          "worstIds": [
+            "jamie-amount",
+            "trail-label",
+            "jamie-item"
+          ],
+          "regionVerdicts": {
+            "paper-texture": "drift",
+            "brand": "drift",
+            "sign-in": "drift",
+            "menu": "drift",
+            "header-rule": "drift",
+            "headline": "drift",
+            "subhead": "drift",
+            "connect-bank": "drift",
+            "upper-map-marks": "drift",
+            "jamie-story": "drift",
+            "jamie-name": "drift",
+            "jamie-item": "contradicted",
+            "jamie-amount": "contradicted",
+            "noor-story": "drift",
+            "noor-name": "drift",
+            "noor-item": "drift",
+            "noor-amount": "drift",
+            "eli-story": "drift",
+            "eli-name": "drift",
+            "eli-item": "drift",
+            "eli-amount": "contradicted",
+            "route-convergence": "drift",
+            "group-marker": "drift",
+            "group-label": "contradicted",
+            "trail-sign": "drift",
+            "trail-label": "contradicted"
+          },
+          "artifactHash": null
+        }
+      ]
+    },
+    "sections": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "motion": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "responsive": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "review": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": null,
+  "plates": {
+    "paper-texture": {
+      "status": "ok",
+      "score": 1,
+      "size": "564x334"
+    },
+    "upper-map-marks": {
+      "status": "ok",
+      "score": 0.5066,
+      "size": "1152x1366"
+    },
+    "jamie-story": {
+      "status": "ok",
+      "score": 0.457,
+      "size": "729x2158"
+    },
+    "noor-story": {
+      "status": "ok",
+      "score": 0.4356,
+      "size": "940x1672"
+    },
+    "eli-story": {
+      "status": "ok",
+      "score": 0.4788,
+      "size": "814x1932"
+    },
+    "route-convergence": {
+      "status": "ok",
+      "score": 0.4708,
+      "size": "1486x1058"
+    },
+    "group-marker": {
+      "status": "ok",
+      "score": 0.4818,
+      "size": "1330x1182"
+    },
+    "trail-sign": {
+      "status": "ok",
+      "score": 0.6072,
+      "size": "1152x1366"
+    }
+  }
+}

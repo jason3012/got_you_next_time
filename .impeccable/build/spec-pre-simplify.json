@@ -1,0 +1,1380 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-09-13T20:35:36.965Z",
+  "comp": ".impeccable/mocks/landing-option-2.webp",
+  "warnings": [],
+  "uncoveredInkCells": [],
+  "compSize": {
+    "width": 940,
+    "height": 1672
+  },
+  "aspect": 0.5622,
+  "orientation": "portrait",
+  "palette": [
+    {
+      "hex": "#e8e5d6",
+      "coverage": 0.8397
+    },
+    {
+      "hex": "#c2b8ac",
+      "coverage": 0.0565
+    },
+    {
+      "hex": "#a95e3a",
+      "coverage": 0.0366
+    },
+    {
+      "hex": "#8a8677",
+      "coverage": 0.0357
+    },
+    {
+      "hex": "#201a15",
+      "coverage": 0.0315
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0439,
+      "strength": 0.4585
+    },
+    {
+      "y": 0.114,
+      "strength": 0.3515
+    },
+    {
+      "y": 0.1447,
+      "strength": 0.7429
+    },
+    {
+      "y": 0.1711,
+      "strength": 0.9715
+    },
+    {
+      "y": 0.2018,
+      "strength": 0.9118
+    },
+    {
+      "y": 0.2325,
+      "strength": 0.4668
+    },
+    {
+      "y": 0.2719,
+      "strength": 0.5679
+    },
+    {
+      "y": 0.3333,
+      "strength": 0.7096
+    },
+    {
+      "y": 0.6096,
+      "strength": 0.2062
+    }
+  ],
+  "regions": [
+    {
+      "id": "paper-texture",
+      "kind": "texture",
+      "note": "clean warm cream fibrous sketch paper with no ink",
+      "grid": "F0:G0",
+      "box": {
+        "x": 0.5,
+        "y": 0,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "px": {
+        "x": 470,
+        "y": 0,
+        "w": 188,
+        "h": 167
+      },
+      "aspect": 1.1257,
+      "palette": [
+        {
+          "hex": "#e9e8d8",
+          "coverage": 0.9929
+        },
+        {
+          "hex": "#c1b8ae",
+          "coverage": 0.0031
+        },
+        {
+          "hex": "#211818",
+          "coverage": 0.002
+        },
+        {
+          "hex": "#2f2f1f",
+          "coverage": 0.002
+        }
+      ],
+      "detail": {
+        "energy": 2.2787
+      },
+      "medium": "raster",
+      "plate": "assets/plates/paper-texture.png",
+      "text": null
+    },
+    {
+      "id": "wordmark",
+      "kind": "text",
+      "note": "SettleUp editorial serif wordmark",
+      "grid": "A0:C0",
+      "coverBox": {
+        "x": 0,
+        "y": 0,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.0383,
+        "y": 0.0108,
+        "w": 0.2617,
+        "h": 0.0467
+      },
+      "px": {
+        "x": 36,
+        "y": 18,
+        "w": 246,
+        "h": 78
+      },
+      "aspect": 3.1538,
+      "palette": [
+        {
+          "hex": "#f1e9e3",
+          "coverage": 0.7569
+        },
+        {
+          "hex": "#1d1814",
+          "coverage": 0.182
+        },
+        {
+          "hex": "#bebcb2",
+          "coverage": 0.0246
+        },
+        {
+          "hex": "#4f4840",
+          "coverage": 0.0227
+        },
+        {
+          "hex": "#79756a",
+          "coverage": 0.0137
+        }
+      ],
+      "detail": {
+        "energy": 37.2687
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "sign-in",
+      "kind": "control",
+      "note": "Sign in text action",
+      "grid": "H0:I0",
+      "coverBox": {
+        "x": 0.7,
+        "y": 0,
+        "w": 0.2,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.7255,
+        "y": 0.0179,
+        "w": 0.1213,
+        "h": 0.0287
+      },
+      "px": {
+        "x": 682,
+        "y": 30,
+        "w": 114,
+        "h": 48
+      },
+      "aspect": 2.375,
+      "palette": [
+        {
+          "hex": "#e9e8d8",
+          "coverage": 0.8133
+        },
+        {
+          "hex": "#1a150e",
+          "coverage": 0.1117
+        },
+        {
+          "hex": "#463b34",
+          "coverage": 0.035
+        },
+        {
+          "hex": "#a39991",
+          "coverage": 0.0233
+        },
+        {
+          "hex": "#cbbeb8",
+          "coverage": 0.0167
+        }
+      ],
+      "detail": {
+        "energy": 22.8498
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "menu",
+      "kind": "control",
+      "note": "three graphite horizontal menu strokes",
+      "grid": "J0:J0",
+      "coverBox": {
+        "x": 0.9,
+        "y": 0,
+        "w": 0.1,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.9,
+        "y": 0.0179,
+        "w": 0.0574,
+        "h": 0.0287
+      },
+      "px": {
+        "x": 846,
+        "y": 30,
+        "w": 54,
+        "h": 48
+      },
+      "aspect": 1.125,
+      "palette": [
+        {
+          "hex": "#e9e6d6",
+          "coverage": 0.6934
+        },
+        {
+          "hex": "#232214",
+          "coverage": 0.1394
+        },
+        {
+          "hex": "#150c0c",
+          "coverage": 0.0627
+        },
+        {
+          "hex": "#b6afa6",
+          "coverage": 0.0523
+        },
+        {
+          "hex": "#474237",
+          "coverage": 0.0523
+        }
+      ],
+      "detail": {
+        "energy": 12.3858
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "headline",
+      "kind": "text",
+      "note": "two-line headline We get each other next time in large black editorial serif",
+      "grid": "A1:H1",
+      "coverBox": {
+        "x": 0,
+        "y": 0.1,
+        "w": 0.8,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.0447,
+        "y": 0.0999,
+        "w": 0.4915,
+        "h": 0.0999
+      },
+      "px": {
+        "x": 42,
+        "y": 167,
+        "w": 462,
+        "h": 167
+      },
+      "aspect": 2.7665,
+      "palette": [
+        {
+          "hex": "#f0e9e2",
+          "coverage": 0.669
+        },
+        {
+          "hex": "#211b16",
+          "coverage": 0.2929
+        },
+        {
+          "hex": "#989888",
+          "coverage": 0.0157
+        },
+        {
+          "hex": "#444438",
+          "coverage": 0.013
+        },
+        {
+          "hex": "#6b6561",
+          "coverage": 0.0095
+        }
+      ],
+      "detail": {
+        "energy": 56.5888
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "subhead",
+      "kind": "text",
+      "note": "Start with what actually happened in clean dark sans-serif",
+      "grid": "A2:G2",
+      "coverBox": {
+        "x": 0,
+        "y": 0.2,
+        "w": 0.7,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.0447,
+        "y": 0.2644,
+        "w": 0.6,
+        "h": 0.0353
+      },
+      "px": {
+        "x": 42,
+        "y": 442,
+        "w": 564,
+        "h": 59
+      },
+      "aspect": 9.5593,
+      "palette": [
+        {
+          "hex": "#a85f3a",
+          "coverage": 0.7876
+        },
+        {
+          "hex": "#ebe9da",
+          "coverage": 0.198
+        },
+        {
+          "hex": "#a97359",
+          "coverage": 0.0075
+        },
+        {
+          "hex": "#cb9b88",
+          "coverage": 0.0064
+        },
+        {
+          "hex": "#e8c8b8",
+          "coverage": 0.0005
+        }
+      ],
+      "detail": {
+        "energy": 19.3272
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "connect-action",
+      "kind": "control",
+      "note": "large terracotta rounded Connect a bank button with right arrow",
+      "grid": "A2:G3",
+      "coverBox": {
+        "x": 0,
+        "y": 0.2,
+        "w": 0.7,
+        "h": 0.2
+      },
+      "box": {
+        "x": 0.0447,
+        "y": 0.2632,
+        "w": 0.6,
+        "h": 0.0742
+      },
+      "px": {
+        "x": 42,
+        "y": 440,
+        "w": 564,
+        "h": 124
+      },
+      "aspect": 4.5484,
+      "palette": [
+        {
+          "hex": "#a85d39",
+          "coverage": 0.7344
+        },
+        {
+          "hex": "#edeadb",
+          "coverage": 0.2246
+        },
+        {
+          "hex": "#b78669",
+          "coverage": 0.0306
+        },
+        {
+          "hex": "#deb7a3",
+          "coverage": 0.0104
+        }
+      ],
+      "detail": {
+        "energy": 23.9216
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "upper-map",
+      "kind": "plate",
+      "note": "transparent graphite mountain ridge and sparse pine field-journal drawing with no text",
+      "grid": "G1:J3",
+      "box": {
+        "x": 0.6,
+        "y": 0.1,
+        "w": 0.4,
+        "h": 0.3
+      },
+      "px": {
+        "x": 564,
+        "y": 167,
+        "w": 376,
+        "h": 502
+      },
+      "aspect": 0.749,
+      "palette": [
+        {
+          "hex": "#e7e6d7",
+          "coverage": 0.8583
+        },
+        {
+          "hex": "#bbb2a5",
+          "coverage": 0.0855
+        },
+        {
+          "hex": "#211b17",
+          "coverage": 0.0262
+        },
+        {
+          "hex": "#a96239",
+          "coverage": 0.018
+        },
+        {
+          "hex": "#8a8276",
+          "coverage": 0.012
+        }
+      ],
+      "detail": {
+        "energy": 20.4003
+      },
+      "medium": "raster",
+      "plate": "assets/plates/upper-map.png",
+      "text": null
+    },
+    {
+      "id": "jamie-map",
+      "kind": "plate",
+      "note": "transparent field-journal plate: simple comic graphite head in a circle, pizza slice, torn paper slips without text, trees, lake edge, and terracotta dotted route converging downward",
+      "grid": "A3:D7",
+      "box": {
+        "x": 0,
+        "y": 0.3,
+        "w": 0.4,
+        "h": 0.5
+      },
+      "px": {
+        "x": 0,
+        "y": 502,
+        "w": 376,
+        "h": 836
+      },
+      "aspect": 0.4498,
+      "palette": [
+        {
+          "hex": "#e5e3d5",
+          "coverage": 0.856
+        },
+        {
+          "hex": "#b8b1a3",
+          "coverage": 0.0616
+        },
+        {
+          "hex": "#a95d3b",
+          "coverage": 0.0554
+        },
+        {
+          "hex": "#827b70",
+          "coverage": 0.0208
+        },
+        {
+          "hex": "#322a26",
+          "coverage": 0.0062
+        }
+      ],
+      "detail": {
+        "energy": 19.7269
+      },
+      "medium": "raster",
+      "plate": "assets/plates/jamie-map.png",
+      "text": null
+    },
+    {
+      "id": "noor-map",
+      "kind": "plate",
+      "note": "transparent field-journal plate: simple comic graphite head in a circle, drinks and stacked plates, torn paper slips without text, sparse trees, and terracotta dotted route converging downward",
+      "grid": "D3:G7",
+      "box": {
+        "x": 0.3,
+        "y": 0.3,
+        "w": 0.4,
+        "h": 0.5
+      },
+      "px": {
+        "x": 282,
+        "y": 502,
+        "w": 376,
+        "h": 836
+      },
+      "aspect": 0.4498,
+      "palette": [
+        {
+          "hex": "#e8e7d7",
+          "coverage": 0.8457
+        },
+        {
+          "hex": "#a95d3a",
+          "coverage": 0.0586
+        },
+        {
+          "hex": "#8a8874",
+          "coverage": 0.0476
+        },
+        {
+          "hex": "#c5bcad",
+          "coverage": 0.0355
+        },
+        {
+          "hex": "#434134",
+          "coverage": 0.0127
+        }
+      ],
+      "detail": {
+        "energy": 16.6756
+      },
+      "medium": "raster",
+      "plate": "assets/plates/noor-map.png",
+      "text": null
+    },
+    {
+      "id": "eli-map",
+      "kind": "plate",
+      "note": "transparent field-journal plate: simple comic graphite head in a circle, gas pump, torn paper slips without text, mountains, river and bridge, and terracotta dotted route converging downward",
+      "grid": "G3:J7",
+      "box": {
+        "x": 0.6,
+        "y": 0.3,
+        "w": 0.4,
+        "h": 0.5
+      },
+      "px": {
+        "x": 564,
+        "y": 502,
+        "w": 376,
+        "h": 836
+      },
+      "aspect": 0.4498,
+      "palette": [
+        {
+          "hex": "#e7e5d4",
+          "coverage": 0.8807
+        },
+        {
+          "hex": "#bdb4a6",
+          "coverage": 0.0777
+        },
+        {
+          "hex": "#817b6f",
+          "coverage": 0.024
+        },
+        {
+          "hex": "#ac6541",
+          "coverage": 0.0116
+        },
+        {
+          "hex": "#575147",
+          "coverage": 0.006
+        }
+      ],
+      "detail": {
+        "energy": 20.3164
+      },
+      "medium": "raster",
+      "plate": "assets/plates/eli-map.png",
+      "text": null
+    },
+    {
+      "id": "jamie-name",
+      "kind": "text",
+      "note": "handwritten Jamie label",
+      "grid": "A4:C4",
+      "coverBox": {
+        "x": 0,
+        "y": 0.4,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.083,
+        "y": 0.4001,
+        "w": 0.1596,
+        "h": 0.0502
+      },
+      "px": {
+        "x": 78,
+        "y": 669,
+        "w": 150,
+        "h": 84
+      },
+      "aspect": 1.7857,
+      "palette": [
+        {
+          "hex": "#eae7d7",
+          "coverage": 0.6749
+        },
+        {
+          "hex": "#c7c3ac",
+          "coverage": 0.1669
+        },
+        {
+          "hex": "#888177",
+          "coverage": 0.0762
+        },
+        {
+          "hex": "#312a24",
+          "coverage": 0.0479
+        },
+        {
+          "hex": "#49483a",
+          "coverage": 0.0341
+        }
+      ],
+      "detail": {
+        "energy": 22.893
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "jamie-item",
+      "kind": "text",
+      "note": "Luna Pizza label",
+      "grid": "A5:C5",
+      "coverBox": {
+        "x": 0,
+        "y": 0.5,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.1213,
+        "y": 0.5,
+        "w": 0.1468,
+        "h": 0.0467
+      },
+      "px": {
+        "x": 114,
+        "y": 836,
+        "w": 138,
+        "h": 78
+      },
+      "aspect": 1.7692,
+      "palette": [
+        {
+          "hex": "#e6e3d3",
+          "coverage": 0.729
+        },
+        {
+          "hex": "#a8a195",
+          "coverage": 0.1862
+        },
+        {
+          "hex": "#746e63",
+          "coverage": 0.0621
+        },
+        {
+          "hex": "#5a4d49",
+          "coverage": 0.0176
+        },
+        {
+          "hex": "#bb856b",
+          "coverage": 0.005
+        }
+      ],
+      "detail": {
+        "energy": 24.3862
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "jamie-amount",
+      "kind": "text",
+      "note": "exact amount $84.20 in bold dark sans-serif",
+      "grid": "A5:C6",
+      "coverBox": {
+        "x": 0,
+        "y": 0.5,
+        "w": 0.3,
+        "h": 0.2
+      },
+      "box": {
+        "x": 0.1202,
+        "y": 0.5,
+        "w": 0.1468,
+        "h": 0.0455
+      },
+      "px": {
+        "x": 113,
+        "y": 836,
+        "w": 138,
+        "h": 76
+      },
+      "aspect": 1.8158,
+      "palette": [
+        {
+          "hex": "#e7e4d5",
+          "coverage": 0.6922
+        },
+        {
+          "hex": "#c2bbad",
+          "coverage": 0.1194
+        },
+        {
+          "hex": "#868274",
+          "coverage": 0.1026
+        },
+        {
+          "hex": "#a99995",
+          "coverage": 0.0471
+        },
+        {
+          "hex": "#635952",
+          "coverage": 0.0387
+        }
+      ],
+      "detail": {
+        "energy": 25.0347
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "noor-name",
+      "kind": "text",
+      "note": "handwritten Noor label",
+      "grid": "D4:F4",
+      "coverBox": {
+        "x": 0.3,
+        "y": 0.4,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.4149,
+        "y": 0.4001,
+        "w": 0.166,
+        "h": 0.0999
+      },
+      "px": {
+        "x": 390,
+        "y": 669,
+        "w": 156,
+        "h": 167
+      },
+      "aspect": 0.9341,
+      "palette": [
+        {
+          "hex": "#e9e6d7",
+          "coverage": 0.5601
+        },
+        {
+          "hex": "#c0b8a7",
+          "coverage": 0.1832
+        },
+        {
+          "hex": "#716c61",
+          "coverage": 0.1017
+        },
+        {
+          "hex": "#3e3333",
+          "coverage": 0.0822
+        },
+        {
+          "hex": "#3b3b2b",
+          "coverage": 0.0727
+        }
+      ],
+      "detail": {
+        "energy": 25.3162
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "noor-item",
+      "kind": "text",
+      "note": "Drinks + plates label",
+      "grid": "D5:G6",
+      "coverBox": {
+        "x": 0.3,
+        "y": 0.5,
+        "w": 0.4,
+        "h": 0.2
+      },
+      "box": {
+        "x": 0.4043,
+        "y": 0.506,
+        "w": 0.1915,
+        "h": 0.1938
+      },
+      "px": {
+        "x": 380,
+        "y": 846,
+        "w": 180,
+        "h": 324
+      },
+      "aspect": 0.5556,
+      "palette": [
+        {
+          "hex": "#e8e5d5",
+          "coverage": 0.9027
+        },
+        {
+          "hex": "#c3b9ad",
+          "coverage": 0.0295
+        },
+        {
+          "hex": "#666155",
+          "coverage": 0.0276
+        },
+        {
+          "hex": "#948a82",
+          "coverage": 0.022
+        },
+        {
+          "hex": "#130d0b",
+          "coverage": 0.0183
+        }
+      ],
+      "detail": {
+        "energy": 18.8752
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "noor-amount",
+      "kind": "text",
+      "note": "exact amount $46.80 in bold dark sans-serif",
+      "grid": "D6:G6",
+      "coverBox": {
+        "x": 0.3,
+        "y": 0.6,
+        "w": 0.4,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.4021,
+        "y": 0.5999,
+        "w": 0.1915,
+        "h": 0.0999
+      },
+      "px": {
+        "x": 378,
+        "y": 1003,
+        "w": 180,
+        "h": 167
+      },
+      "aspect": 1.0778,
+      "palette": [
+        {
+          "hex": "#e8e5d5",
+          "coverage": 0.9274
+        },
+        {
+          "hex": "#120e0a",
+          "coverage": 0.0354
+        },
+        {
+          "hex": "#403931",
+          "coverage": 0.0134
+        },
+        {
+          "hex": "#ae6b4c",
+          "coverage": 0.0122
+        },
+        {
+          "hex": "#686359",
+          "coverage": 0.0116
+        }
+      ],
+      "detail": {
+        "energy": 18.2439
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "eli-name",
+      "kind": "text",
+      "note": "handwritten Eli label",
+      "grid": "H4:J4",
+      "coverBox": {
+        "x": 0.7,
+        "y": 0.4,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.9234,
+        "y": 0.4073,
+        "w": 0.0766,
+        "h": 0.0927
+      },
+      "px": {
+        "x": 868,
+        "y": 681,
+        "w": 72,
+        "h": 155
+      },
+      "aspect": 0.4645,
+      "palette": [
+        {
+          "hex": "#e6e3d3",
+          "coverage": 0.8189
+        },
+        {
+          "hex": "#b0a99c",
+          "coverage": 0.109
+        },
+        {
+          "hex": "#827a6f",
+          "coverage": 0.0593
+        },
+        {
+          "hex": "#5e554e",
+          "coverage": 0.0128
+        }
+      ],
+      "detail": {
+        "energy": 8.474
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "eli-item",
+      "kind": "text",
+      "note": "Gas + utilities label",
+      "grid": "G5:J6",
+      "coverBox": {
+        "x": 0.6,
+        "y": 0.5,
+        "w": 0.4,
+        "h": 0.2
+      },
+      "box": {
+        "x": 0.6277,
+        "y": 0.5,
+        "w": 0.3021,
+        "h": 0.1998
+      },
+      "px": {
+        "x": 590,
+        "y": 836,
+        "w": 284,
+        "h": 334
+      },
+      "aspect": 0.8503,
+      "palette": [
+        {
+          "hex": "#e8e5d4",
+          "coverage": 0.9423
+        },
+        {
+          "hex": "#ac6c4c",
+          "coverage": 0.0218
+        },
+        {
+          "hex": "#b6aea3",
+          "coverage": 0.0193
+        },
+        {
+          "hex": "#817b70",
+          "coverage": 0.0088
+        },
+        {
+          "hex": "#cba187",
+          "coverage": 0.0078
+        }
+      ],
+      "detail": {
+        "energy": 18.3231
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "eli-amount",
+      "kind": "text",
+      "note": "exact amount $112.40 in bold dark sans-serif",
+      "grid": "H6:J6",
+      "coverBox": {
+        "x": 0.7,
+        "y": 0.6,
+        "w": 0.3,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.7447,
+        "y": 0.6035,
+        "w": 0.1277,
+        "h": 0.0287
+      },
+      "px": {
+        "x": 700,
+        "y": 1009,
+        "w": 120,
+        "h": 48
+      },
+      "aspect": 2.5,
+      "palette": [
+        {
+          "hex": "#e9e6d5",
+          "coverage": 0.7991
+        },
+        {
+          "hex": "#1a140e",
+          "coverage": 0.1162
+        },
+        {
+          "hex": "#c5bdb1",
+          "coverage": 0.0377
+        },
+        {
+          "hex": "#484037",
+          "coverage": 0.0267
+        },
+        {
+          "hex": "#79716a",
+          "coverage": 0.0204
+        }
+      ],
+      "detail": {
+        "energy": 25.7429
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "group-marker",
+      "kind": "plate",
+      "note": "transparent plate with sage circular friend-group symbol, torn paper label without text, terracotta dotted trail continuing downward, and a few graphite trees",
+      "grid": "D7:G9",
+      "box": {
+        "x": 0.3,
+        "y": 0.7,
+        "w": 0.4,
+        "h": 0.3
+      },
+      "px": {
+        "x": 282,
+        "y": 1170,
+        "w": 376,
+        "h": 502
+      },
+      "aspect": 0.749,
+      "palette": [
+        {
+          "hex": "#e7e4d4",
+          "coverage": 0.8787
+        },
+        {
+          "hex": "#8b8975",
+          "coverage": 0.0873
+        },
+        {
+          "hex": "#b8b0a4",
+          "coverage": 0.0194
+        },
+        {
+          "hex": "#aa6545",
+          "coverage": 0.0112
+        },
+        {
+          "hex": "#7a6a68",
+          "coverage": 0.0034
+        }
+      ],
+      "detail": {
+        "energy": 14.8923
+      },
+      "medium": "raster",
+      "plate": "assets/plates/group-marker.png",
+      "text": null
+    },
+    {
+      "id": "group-label",
+      "kind": "text",
+      "note": "The group evens out on torn paper",
+      "grid": "D8:G8",
+      "coverBox": {
+        "x": 0.3,
+        "y": 0.8,
+        "w": 0.4,
+        "h": 0.1
+      },
+      "box": {
+        "x": 0.4021,
+        "y": 0.8002,
+        "w": 0.1915,
+        "h": 0.0215
+      },
+      "px": {
+        "x": 378,
+        "y": 1338,
+        "w": 180,
+        "h": 36
+      },
+      "aspect": 5,
+      "palette": [
+        {
+          "hex": "#8c8a76",
+          "coverage": 0.5333
+        },
+        {
+          "hex": "#e9e5d5",
+          "coverage": 0.4472
+        },
+        {
+          "hex": "#c4bbab",
+          "coverage": 0.0167
+        },
+        {
+          "hex": "#685848",
+          "coverage": 0.0014
+        },
+        {
+          "hex": "#a89898",
+          "coverage": 0.0014
+        }
+      ],
+      "detail": {
+        "energy": 10.0222
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "lower-left-map",
+      "kind": "plate",
+      "note": "transparent graphite lake, sailboat, pine trees, lower mountains and torn-paper edge with no text",
+      "grid": "A7:E9",
+      "box": {
+        "x": 0,
+        "y": 0.7,
+        "w": 0.5,
+        "h": 0.3
+      },
+      "px": {
+        "x": 0,
+        "y": 1170,
+        "w": 470,
+        "h": 502
+      },
+      "aspect": 0.9363,
+      "palette": [
+        {
+          "hex": "#e5e2d3",
+          "coverage": 0.8853
+        },
+        {
+          "hex": "#8e8b79",
+          "coverage": 0.0542
+        },
+        {
+          "hex": "#b8b1a7",
+          "coverage": 0.0477
+        },
+        {
+          "hex": "#766b62",
+          "coverage": 0.0092
+        },
+        {
+          "hex": "#ad6343",
+          "coverage": 0.0035
+        }
+      ],
+      "detail": {
+        "energy": 17.8465
+      },
+      "medium": "raster",
+      "plate": "assets/plates/lower-left-map.png",
+      "text": null
+    },
+    {
+      "id": "lower-right-map",
+      "kind": "plate",
+      "note": "transparent graphite river, bridge, pine trees, lower mountains and torn-paper edge with no text",
+      "grid": "F7:J9",
+      "box": {
+        "x": 0.5,
+        "y": 0.7,
+        "w": 0.5,
+        "h": 0.3
+      },
+      "px": {
+        "x": 470,
+        "y": 1170,
+        "w": 470,
+        "h": 502
+      },
+      "aspect": 0.9363,
+      "palette": [
+        {
+          "hex": "#e5dfcf",
+          "coverage": 0.8241
+        },
+        {
+          "hex": "#878374",
+          "coverage": 0.0918
+        },
+        {
+          "hex": "#b5ada1",
+          "coverage": 0.0635
+        },
+        {
+          "hex": "#5d554c",
+          "coverage": 0.017
+        },
+        {
+          "hex": "#ae6646",
+          "coverage": 0.0036
+        }
+      ],
+      "detail": {
+        "energy": 25.9061
+      },
+      "medium": "raster",
+      "plate": "assets/plates/lower-right-map.png",
+      "text": null
+    },
+    {
+      "id": "trail-sign",
+      "kind": "plate",
+      "note": "transparent hand-drawn wooden direction sign and downward arrow with blank sign face",
+      "grid": "H8:J9",
+      "box": {
+        "x": 0.7,
+        "y": 0.8,
+        "w": 0.3,
+        "h": 0.2
+      },
+      "px": {
+        "x": 658,
+        "y": 1338,
+        "w": 282,
+        "h": 334
+      },
+      "aspect": 0.8443,
+      "palette": [
+        {
+          "hex": "#e5dccc",
+          "coverage": 0.7918
+        },
+        {
+          "hex": "#b1a99d",
+          "coverage": 0.111
+        },
+        {
+          "hex": "#80796e",
+          "coverage": 0.0724
+        },
+        {
+          "hex": "#585049",
+          "coverage": 0.0248
+        }
+      ],
+      "detail": {
+        "energy": 29.1984
+      },
+      "medium": "raster",
+      "plate": "assets/plates/trail-sign.png",
+      "text": null
+    },
+    {
+      "id": "trail-label",
+      "kind": "text",
+      "note": "handwritten Follow the trail label",
+      "grid": "H8:J9",
+      "coverBox": {
+        "x": 0.7,
+        "y": 0.8,
+        "w": 0.3,
+        "h": 0.2
+      },
+      "box": {
+        "x": 0.7,
+        "y": 0.8385,
+        "w": 0.2968,
+        "h": 0.1615
+      },
+      "px": {
+        "x": 658,
+        "y": 1402,
+        "w": 279,
+        "h": 270
+      },
+      "aspect": 1.0333,
+      "palette": [
+        {
+          "hex": "#e2d8c9",
+          "coverage": 0.8077
+        },
+        {
+          "hex": "#9a9387",
+          "coverage": 0.1421
+        },
+        {
+          "hex": "#645d54",
+          "coverage": 0.0474
+        },
+        {
+          "hex": "#453e3a",
+          "coverage": 0.0028
+        }
+      ],
+      "detail": {
+        "energy": 32.9642
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    }
+  ]
+}

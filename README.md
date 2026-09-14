@@ -4,15 +4,15 @@ SettleUp is an expense-sharing application for friend groups. It will connect to
 
 ## Project status
 
-Phase 6 is complete and Phase 7 is in progress. The project has a working backend for manual and bank-connected expense sharing:
+Phase 7 is complete. The project has a working backend and phone-first frontend for bank-connected expense sharing:
 
 - Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
 - Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
 - Phase 5: account registration and login, BCrypt password hashing, signed JWT access tokens, authenticated user identity, and protected APIs
 - Phase 6: Plaid Link, encrypted bank credentials, account discovery, cursor-based transaction sync, verified webhooks, and transaction-to-expense conversion
-- Phase 7 (in progress): React, TypeScript, Vite, typed API contracts, routing dependencies, and Plaid Link client support
+- Phase 7: React authentication and protected routing; a Plaid-first transaction feed; transaction-to-group sharing; friend groups, balances, suggested settlements, and manual fallback expenses; plus the conceptual-sketch landing experience and scroll-linked phone-circle story
 
-The remaining work is the user-facing React experience for authentication, groups, expenses, balances, settlements, bank connections, and imported transactions, followed by deployment work.
+The remaining roadmap covers transaction classification and its suggestion inbox, test hardening, containerization, local Kubernetes, CI/CD and observability, and final shipping work as defined in `settleup-build-spec.md`.
 
 ## Tech stack
 
@@ -21,7 +21,7 @@ The remaining work is the user-facing React experience for authentication, group
 - Plaid Sandbox for bank account data
 - Docker for local services and app containers
 - Kubernetes, kind, and Helm for local deployment work
-- React, Vite, TypeScript, Fluent UI, and Radix UI for the frontend
+- React, Vite, TypeScript, Fluent UI, Radix UI, Drawably, and GSAP for the frontend
 
 ## Setup
 

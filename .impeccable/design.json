@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T01:35:00Z",
+  "title": "Design System: SettleUp",
+  "extensions": {
+    "colorMeta": {
+      "route-terracotta": { "role": "primary", "displayName": "Route Terracotta", "canonical": "#D57B4E", "tonalRamp": ["#382017", "#5C3425", "#814934", "#A85F42", "#D57B4E", "#E59D78", "#F0C2A7", "#F8E9DB"] },
+      "action-terracotta": { "role": "primary", "displayName": "Action Terracotta", "canonical": "#AE5B39", "tonalRamp": ["#321A11", "#542B1B", "#743C27", "#934D31", "#AE5B39", "#CF805C", "#E8B39C", "#F7E7DE"] },
+      "resolved-sage": { "role": "secondary", "displayName": "Resolved Sage", "canonical": "#ABA784", "tonalRamp": ["#27261D", "#444233", "#625F49", "#817D61", "#ABA784", "#C3C0A4", "#DBD9C5", "#F2F1E8"] },
+      "journal-paper": { "role": "neutral", "displayName": "Journal Paper", "canonical": "#F3EBDF", "tonalRamp": ["#2C2822", "#4D463C", "#706659", "#958779", "#BDAE9D", "#D8CAB9", "#E9DDD0", "#F3EBDF"] },
+      "graphite-ink": { "role": "neutral", "displayName": "Graphite Ink", "canonical": "#1B1712", "tonalRamp": ["#1B1712", "#38312A", "#594F45", "#7A6E62", "#9D9185", "#BFB5AA", "#DDD6CE", "#F5F1EC"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Bold Rounded Display", "purpose": "One strong page promise or title." },
+      "title": { "displayName": "Notebook Title", "purpose": "Section and dialog headings." },
+      "body": { "displayName": "Exact Body", "purpose": "Transactions, controls, instructions, and metadata." },
+      "annotation": { "displayName": "Pen Annotation", "purpose": "Sparse route and notebook notes only." }
+    },
+    "shadows": [
+      { "name": "sketch-offset", "value": "3px 4px 0 rgba(27,23,18,0.18)", "purpose": "Floating phones and persistent mobile navigation only." },
+      { "name": "dialog-ambient", "value": "0 -14px 50px rgba(27,23,18,0.20)", "purpose": "Mobile bottom sheets over their dimmed overlay." }
+    ],
+    "motion": [
+      { "name": "micro-standard", "value": "180ms ease", "purpose": "Small hover and navigation responses." },
+      { "name": "sheet-entry", "value": "220ms ease", "purpose": "Bottom-sheet entrance from below." },
+      { "name": "route-scroll", "value": "GSAP scrub 0.6", "purpose": "Native-scroll-linked phone reveal and rotation; disabled for reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "680px" },
+      { "name": "centered-dialog", "value": "760px" },
+      { "name": "content-cap", "value": "1080px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Drawn Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single high-value action in a section.",
+      "html": "<button class=\"ds-btn-primary\">Connect a bank <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-btn-primary{min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;color:#f3ebdf;font:600 16px Archivo,Arial,sans-serif;border:2px solid #1b1712;border-radius:13px 10px 15px 11px;background:#ae5b39;cursor:pointer}.ds-btn-primary:hover{background:#934d31}.ds-btn-primary:focus-visible{outline:3px solid #d57b4e;outline-offset:4px}"
+    },
+    {
+      "name": "Outline Drawn Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary, reversible, or row-level action.",
+      "html": "<button class=\"ds-btn-outline\">Share <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-btn-outline{min-height:48px;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;color:#1b1712;font:500 16px Archivo,Arial,sans-serif;border:2px solid #1b1712;border-radius:11px 14px 10px 13px;background:transparent;cursor:pointer}.ds-btn-outline:hover{background:#eadbc8}.ds-btn-outline:focus-visible{outline:3px solid #d57b4e;outline-offset:4px}"
+    },
+    {
+      "name": "Paper Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Semantic native input on a warm paper layer.",
+      "html": "<label class=\"ds-field-label\">Email<input class=\"ds-field\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-field-label{display:grid;gap:8px;color:#1b1712;font:650 15px Archivo,Arial,sans-serif}.ds-field{min-height:52px;padding:12px 14px;color:#1b1712;font:400 16px Archivo,Arial,sans-serif;border:2px solid #1b1712;border-radius:11px 14px 10px 13px;background:#fffaf2}.ds-field:focus-visible{outline:3px solid #d57b4e;outline-offset:3px}"
+    },
+    {
+      "name": "Connected Bank Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "A calm status panel that introduces the transaction feed.",
+      "html": "<section class=\"ds-bank\"><span class=\"ds-bank-icon\">$</span><div><h3>Connected banks</h3><p>1 connection keeping the trail current.</p></div><button>Sync</button></section>",
+      "css": ".ds-bank{display:grid;grid-template-columns:auto 1fr auto;gap:14px;padding:22px;color:#1b1712;border:2px solid #1b1712;border-radius:15px 19px 13px 17px;background:#e3ddc8;font:400 15px Archivo,Arial,sans-serif}.ds-bank-icon{width:42px;height:42px;display:grid;place-items:center;border:2px solid #1b1712;border-radius:50%;background:#f3ebdf}.ds-bank h3{margin:0;font:730 24px Archivo,Arial,sans-serif;letter-spacing:-.02em}.ds-bank p{margin:4px 0 0;color:#625b4b}.ds-bank button{border:0;background:transparent;text-decoration:underline}"
+    },
+    {
+      "name": "Transaction Row",
+      "kind": "custom",
+      "description": "The primary bank-feed unit with exact amount and share action.",
+      "html": "<article class=\"ds-transaction\"><span class=\"ds-merchant\">L</span><div><strong>Luna Pizza</strong><small>Everyday checking · Sep 12</small></div><b>$84.20</b><button>Share →</button></article>",
+      "css": ".ds-transaction{min-height:86px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:13px 0;color:#1b1712;border-block:2px solid #1b1712;font:400 15px Archivo,Arial,sans-serif}.ds-merchant{width:46px;height:46px;display:grid;place-items:center;border:2px solid #1b1712;border-radius:47% 53% 44% 56%;background:#d8d4b8;font:20px 'Drawably Pen',sans-serif}.ds-transaction div{display:grid}.ds-transaction small{color:#766a5f}.ds-transaction b{font-variant-numeric:tabular-nums}.ds-transaction button{grid-column:2/4;min-height:44px;color:#1b1712;border:0;background:transparent;text-align:left}"
+    },
+    {
+      "name": "Mobile Bottom Navigation",
+      "kind": "nav",
+      "description": "Three labeled destinations with a quiet paper-patch active state.",
+      "html": "<nav class=\"ds-nav\"><a class=\"active\" href=\"#\">Activity</a><a href=\"#\">Banks</a><a href=\"#\">Groups</a></nav>",
+      "css": ".ds-nav{height:68px;display:flex;align-items:stretch;justify-content:space-around;padding:5px;border:2px solid #1b1712;border-radius:18px 16px 20px 15px;background:#fffaf2;box-shadow:3px 4px 0 rgba(27,23,18,.18);font:400 12px Archivo,Arial,sans-serif}.ds-nav a{min-width:82px;display:grid;place-items:center;color:#786c60;border-radius:12px;text-decoration:none}.ds-nav a.active{color:#1b1712;background:#eadbc8}.ds-nav a:focus-visible{outline:3px solid #d57b4e;outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Friends' Field Notebook",
+    "overview": "SettleUp should feel like a shared page passed around a table: candid, useful, lightly imperfect, and easy to understand. Its warmth comes from cream paper, graphite marks, sparse terracotta routes, and intentionally simple comic faces—not from decorative excess. Notion-like restraint keeps the raw sketch language legible and trustworthy around real money. The system pairs a bold rounded grotesk with exact, quiet sans-serif data and a handwritten face used only for annotations. Motion tells the product story: separate purchases trace toward a shared state, then phone views reveal the whole friend circle. Product screens inherit the material more quietly so transactions and balances stay primary.",
+    "keyCharacteristics": ["Real transaction data is the visual and functional center of gravity.", "Roughness lives in drawn controls, dividers, routes, and sparse annotations.", "People are minimal comic marks or initials, never photographic or AI-realistic portraits.", "Phone layouts are canonical; wider layouts add breathing room rather than more decoration."],
+    "rules": [
+      { "name": "Sparse Route", "body": "Terracotta should point, trace, or activate; it should not wash entire content surfaces.", "section": "colors" },
+      { "name": "Calm Money", "body": "Amounts use graphite by default. Success and error colors communicate a state, never decorate ordinary currency.", "section": "colors" },
+      { "name": "One Bold Gesture", "body": "Use Archivo to establish hierarchy, not on every component label.", "section": "typography" },
+      { "name": "Phone Is Canon", "body": "Desktop may spread content across available width, but it must not change the task order established on a phone.", "section": "layout" },
+      { "name": "Paper-First", "body": "Do not stack generic white cards. Use a rule, spacing, or a small tonal shift before adding elevation.", "section": "elevation" }
+    ],
+    "dos": ["Do start authenticated experiences with connected banks and reviewable transaction data.", "Do use Drawably on visible actions and fields while retaining semantic controls.", "Do keep amounts aligned, tabular, and readable at a glance.", "Do let route motion explain relationships and honor reduced-motion preferences.", "Do represent friends with minimal comic marks or initials."],
+    "donts": ["Don't present a generic fintech phone mockup, glassmorphism, glossy gradient, or polished AI portrait.", "Don't let manual expense entry visually outrank transaction import.", "Don't split every section into an interchangeable rounded card.", "Don't add handwritten type to dense data, body copy, or error messages.", "Don't invent testimonials, partner claims, or product metrics."]
+  }
+}

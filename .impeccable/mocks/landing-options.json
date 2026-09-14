@@ -1,0 +1,44 @@
+{
+  "title": "Choose the landing composition",
+  "question": "All three use the chosen Field Note Constellation. Pick the composition that best expresses friends naturally getting each other next time.",
+  "options": [
+    {
+      "id": "landing-option-1",
+      "label": "Specimen to Story",
+      "kicker": "ORIGINAL PICK",
+      "lineage": "field specimen and social map",
+      "thesis": "One imported charge moves from a pinned bank record into a mapped friend group.",
+      "palette": ["#EEE8DA", "#292824", "#B86B45", "#8F9278"],
+      "materials": ["soft pencil", "folded specimen slip", "dotted route"],
+      "viewport": "A single Luna Pizza charge anchors the page beside Jamie, Noor, and Eli, with the route continuing below the fold.",
+      "risk": "It explains one expense clearly but says less about reciprocity across several purchases.",
+      "comp": ".impeccable/mocks/landing-option-1.webp"
+    },
+    {
+      "id": "landing-option-2",
+      "label": "Three Paths Converge",
+      "kicker": "THE JOURNEY",
+      "lineage": "hand-plotted field route",
+      "thesis": "Three friends take different purchase paths that visibly converge into one balanced group.",
+      "palette": ["#EEE8DA", "#292824", "#B86B45", "#8F9278"],
+      "materials": ["editorial serif", "map ink", "torn labels"],
+      "viewport": "Jamie’s pizza, Noor’s drinks and plates, and Eli’s gas and utilities descend through a literal field map into the group.",
+      "risk": "The landscape reads like a trip even though the mechanism must work for everyday groups too.",
+      "comp": ".impeccable/mocks/landing-option-2.webp"
+    },
+    {
+      "id": "landing-option-3",
+      "label": "The Circular Ledger",
+      "kicker": "CLOSEST TO YOUR NOTE",
+      "lineage": "social diagram and annotated group ledger",
+      "thesis": "Different purchases circulate around the group until contribution comes back naturally.",
+      "palette": ["#EEE8DA", "#292824", "#D57B4E", "#8F9278"],
+      "materials": ["editorial serif", "graphite portraits", "transaction slips", "traced circular arrows"],
+      "viewport": "Jamie, Noor, and Eli surround a Weekend crew ledger; their exact purchases form a circular path that continues into the phone-ring reveal.",
+      "risk": "The phrase about not counting every cent must not imply that SettleUp is financially imprecise.",
+      "comp": ".impeccable/mocks/landing-option-3.webp"
+    }
+  ],
+  "buildPath": {"value": "comp", "toggle": false},
+  "followup": false
+}

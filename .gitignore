@@ -24,4 +24,8 @@ frontend/dist/
 # Personal Markdown files
 *.md
 !README.md
+!DESIGN.md
+!PRODUCT.md
+!.agents/**/*.md
+!.impeccable/**/*.md
 !docs/settlement-algorithm.md
