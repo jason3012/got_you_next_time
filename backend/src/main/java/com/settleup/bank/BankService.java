@@ -10,6 +10,7 @@ import com.settleup.bank.dto.SyncResponse;
 import com.settleup.common.exception.ConflictException;
 import com.settleup.common.exception.NotFoundException;
 import com.settleup.common.exception.ValidationException;
+import com.settleup.classification.ClassificationService;
 import com.settleup.expense.Expense;
 import com.settleup.expense.ExpenseRepository;
 import com.settleup.expense.ExpenseService;
@@ -43,6 +44,7 @@ public class BankService {
     private final UserRepository userRepository;
     private final ExpenseService expenseService;
     private final ExpenseRepository expenseRepository;
+    private final ClassificationService classificationService;
     private final Clock clock;
 
     @Autowired
@@ -54,10 +56,11 @@ public class BankService {
             BankTransactionRepository transactionRepository,
             UserRepository userRepository,
             ExpenseService expenseService,
-            ExpenseRepository expenseRepository
+            ExpenseRepository expenseRepository,
+            ClassificationService classificationService
     ) {
         this(plaidClient, tokenCipher, connectionRepository, accountRepository, transactionRepository,
-                userRepository, expenseService, expenseRepository, Clock.systemUTC());
+                userRepository, expenseService, expenseRepository, classificationService, Clock.systemUTC());
     }
 
     BankService(
@@ -69,6 +72,7 @@ public class BankService {
             UserRepository userRepository,
             ExpenseService expenseService,
             ExpenseRepository expenseRepository,
+            ClassificationService classificationService,
             Clock clock
     ) {
         this.plaidClient = plaidClient;
@@ -79,6 +83,7 @@ public class BankService {
         this.userRepository = userRepository;
         this.expenseService = expenseService;
         this.expenseRepository = expenseRepository;
+        this.classificationService = classificationService;
         this.clock = clock;
     }
 
@@ -183,6 +188,7 @@ public class BankService {
                         request.splits()));
         Expense expense = expenseRepository.getReferenceById(response.id());
         transaction.linkExpense(expense);
+        classificationService.clearPending(transaction.getId());
         return response;
     }
 
@@ -224,10 +230,13 @@ public class BankService {
         Map<String, BankAccount> accounts = accountRepository.findAllByConnectionIdOrderByNameAsc(connection.getId())
                 .stream()
                 .collect(java.util.stream.Collectors.toMap(BankAccount::getPlaidAccountId, account -> account));
-        added.values().forEach(transaction -> upsertTransaction(accounts, transaction));
-        modified.values().forEach(transaction -> upsertTransaction(accounts, transaction));
+        added.values().forEach(transaction -> classificationService.classify(upsertTransaction(accounts, transaction)));
+        modified.values().forEach(transaction -> classificationService.classify(upsertTransaction(accounts, transaction)));
         removed.keySet().forEach(id -> transactionRepository.findByPlaidTransactionId(id)
-                .ifPresent(BankTransaction::markRemoved));
+                .ifPresent(transaction -> {
+                    transaction.markRemoved();
+                    classificationService.clearPending(transaction.getId());
+                }));
         Instant syncedAt = clock.instant();
         connection.synced(cursor, syncedAt);
         return new SyncResponse(added.size(), modified.size(), removed.size(), syncedAt);
@@ -250,7 +259,7 @@ public class BankService {
         accountRepository.flush();
     }
 
-    private void upsertTransaction(Map<String, BankAccount> accounts, PlaidClient.TransactionData data) {
+    private BankTransaction upsertTransaction(Map<String, BankAccount> accounts, PlaidClient.TransactionData data) {
         BankAccount account = accounts.get(data.accountId());
         if (account == null) {
             throw new PlaidApiException(
@@ -261,7 +270,7 @@ public class BankService {
         BankTransaction transaction = transactionRepository.findByPlaidTransactionId(data.transactionId())
                 .orElseGet(() -> new BankTransaction(account, data));
         transaction.apply(data);
-        transactionRepository.save(transaction);
+        return transactionRepository.save(transaction);
     }
 
     private User requireUser(UUID userId) {
@@ -300,6 +309,7 @@ public class BankService {
                 transaction.getMerchantName(),
                 transaction.getAmountCents(),
                 transaction.getIsoCurrencyCode(),
+                transaction.getCategory(),
                 transaction.getAuthorizedDate(),
                 transaction.getPostedDate(),
                 transaction.isPending(),

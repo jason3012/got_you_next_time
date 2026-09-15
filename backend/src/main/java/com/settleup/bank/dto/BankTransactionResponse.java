@@ -11,6 +11,7 @@ public record BankTransactionResponse(
         String merchantName,
         long amountCents,
         String isoCurrencyCode,
+        String category,
         LocalDate authorizedDate,
         LocalDate postedDate,
         boolean pending,

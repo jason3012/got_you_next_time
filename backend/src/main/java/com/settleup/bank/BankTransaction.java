@@ -44,6 +44,9 @@ public class BankTransaction {
     @Column(name = "iso_currency_code", nullable = false)
     private String isoCurrencyCode;
 
+    @Column(length = 100)
+    private String category;
+
     @Column(name = "authorized_date")
     private LocalDate authorizedDate;
 
@@ -82,6 +85,7 @@ public class BankTransaction {
         this.merchantName = data.merchantName();
         this.amountCents = data.amountCents();
         this.isoCurrencyCode = data.isoCurrencyCode();
+        this.category = data.category();
         this.authorizedDate = data.authorizedDate();
         this.postedDate = data.postedDate();
         this.pending = data.pending();
@@ -103,6 +107,7 @@ public class BankTransaction {
     public String getMerchantName() { return merchantName; }
     public long getAmountCents() { return amountCents; }
     public String getIsoCurrencyCode() { return isoCurrencyCode; }
+    public String getCategory() { return category; }
     public LocalDate getAuthorizedDate() { return authorizedDate; }
     public LocalDate getPostedDate() { return postedDate; }
     public boolean isPending() { return pending; }

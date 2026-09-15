@@ -87,6 +87,7 @@ export interface BankTransaction {
   merchantName: string | null
   amountCents: number
   isoCurrencyCode: string
+  category: string | null
   authorizedDate: string | null
   postedDate: string
   pending: boolean

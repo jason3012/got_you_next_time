@@ -4,15 +4,16 @@ SettleUp is an expense-sharing application for friend groups. It will connect to
 
 ## Project status
 
-Phase 7 is complete. The project has a working backend and phone-first frontend for bank-connected expense sharing:
+Phase 8 is complete. The project has a working backend and phone-first frontend for bank-connected expense sharing:
 
 - Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
 - Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
 - Phase 5: account registration and login, BCrypt password hashing, signed JWT access tokens, authenticated user identity, and protected APIs
 - Phase 6: Plaid Link, encrypted bank credentials, account discovery, cursor-based transaction sync, verified webhooks, and transaction-to-expense conversion
 - Phase 7: React authentication and protected routing; a Plaid-first transaction feed; transaction-to-group sharing; friend groups, balances, suggested settlements, and manual fallback expenses; plus the conceptual-sketch landing experience and scroll-linked phone-circle story
+- Phase 8: rule-based transaction classification using merchant history, category, and typical amounts; a confidence-gated suggestion inbox; confirm/reject endpoints; and negative feedback that suppresses repeated bad suggestions
 
-The remaining roadmap covers transaction classification and its suggestion inbox, test hardening, containerization, local Kubernetes, CI/CD and observability, and final shipping work as defined in `settleup-build-spec.md`.
+The remaining roadmap covers integration-test hardening, containerization, local Kubernetes, CI/CD and observability, and final shipping work as defined in `settleup-build-spec.md`.
 
 ## Tech stack
 
@@ -83,6 +84,7 @@ The current API supports:
 - expense creation and deletion with equal, exact, or percentage splits
 - group balances, suggested settlement transfers, and recorded settlements
 - Plaid Link tokens, bank connections, transaction synchronization, and importing transactions as expenses
+- pending expense suggestions, explicit confirmation into a real group expense, and rejection feedback
 
 Install and run the frontend during development:
 

@@ -114,6 +114,7 @@ public class PlaidClient {
                 optionalText(node, "merchant_name"),
                 toCents(node.path("amount").decimalValue()),
                 currency(node),
+                category(node),
                 optionalDate(node, "authorized_date"),
                 LocalDate.parse(requiredText(node, "date")),
                 node.path("pending").asBoolean(false))));
@@ -129,6 +130,10 @@ public class PlaidClient {
     private String currency(JsonNode transaction) {
         String currency = optionalText(transaction, "iso_currency_code");
         return currency == null ? "USD" : currency;
+    }
+
+    private String category(JsonNode transaction) {
+        return optionalText(transaction.path("personal_finance_category"), "primary");
     }
 
     private LocalDate optionalDate(JsonNode node, String field) {
@@ -235,6 +240,7 @@ public class PlaidClient {
             String merchantName,
             long amountCents,
             String isoCurrencyCode,
+            String category,
             LocalDate authorizedDate,
             LocalDate postedDate,
             boolean pending
