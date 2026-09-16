@@ -16,6 +16,7 @@ frontend/dist/
 # IDE / OS
 .idea/
 *.iml
+k8s/overlays/local/secrets.env
 .DS_Store
 
 # Local test and tool output

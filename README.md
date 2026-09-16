@@ -4,7 +4,7 @@ SettleUp is an expense-sharing application for friend groups. It will connect to
 
 ## Project status
 
-Phase 8 is complete. The project has a working backend and phone-first frontend for bank-connected expense sharing:
+Phases 0–11 are complete: 12 of 16 planned phases, or 75% of the phase roadmap. Progress is counted only from completed phase gates, not partially implemented work from later phases.
 
 - Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
 - Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
@@ -12,8 +12,11 @@ Phase 8 is complete. The project has a working backend and phone-first frontend 
 - Phase 6: Plaid Link, encrypted bank credentials, account discovery, cursor-based transaction sync, verified webhooks, and transaction-to-expense conversion
 - Phase 7: React authentication and protected routing; a Plaid-first transaction feed; transaction-to-group sharing; friend groups, balances, suggested settlements, and manual fallback expenses; plus the conceptual-sketch landing experience and scroll-linked phone-circle story
 - Phase 8: rule-based transaction classification using merchant history, category, and typical amounts; a confidence-gated suggestion inbox; confirm/reject endpoints; and negative feedback that suppresses repeated bad suggestions
+- Phase 9: a 35-test integration suite against a shared Testcontainers PostgreSQL 16 instance, including authentication, authorization, expenses, settlements, Plaid webhook idempotency, and suggestion decisions
+- Phase 10: a cached multi-stage, non-root API image and health-gated Docker Compose stack; the runtime image is approximately 261 MiB
+- Phase 11: a three-node local kind deployment with Kustomize, two API replicas, PostgreSQL persistent storage, ingress, health probes, resource controls, metrics-server, and CPU autoscaling from 2–5 replicas
 
-The remaining roadmap covers integration-test hardening, containerization, local Kubernetes, CI/CD and observability, and final shipping work as defined in `settleup-build-spec.md`.
+Work continues strictly in phase order. The next executable bundle is Phase 12, followed by Phase 13. Phase 14 is optional and incurs AWS cost; Phase 15 is the final shipping pass. See `settleup-build-spec.md` for their acceptance gates.
 
 ## Tech stack
 
@@ -57,12 +60,10 @@ openssl rand -base64 32
 
 Plaid-backed bank connection features begin in Phase 6. Before working on those features, create a Plaid Sandbox account and add its client ID and secret to `.env`. Each local setup needs its own credentials.
 
-Start PostgreSQL and the backend:
+Start the production-shaped local stack:
 
 ```bash
-docker compose up -d
-cd backend
-./mvnw spring-boot:run
+docker compose up --build -d
 ```
 
 The health endpoint is available at <http://localhost:8080/actuator/health>. API documentation is available at <http://localhost:8080/swagger-ui.html>.
@@ -94,6 +95,35 @@ npm run frontend:dev
 ```
 
 The frontend uses <http://localhost:5173> and connects to the API at <http://localhost:8080> by default. Set `VITE_API_URL` when the backend is hosted elsewhere.
+
+## Verification
+
+Run the backend integration suite with Docker available:
+
+```bash
+cd backend
+./mvnw verify
+```
+
+Run the frontend checks:
+
+```bash
+npm run frontend:lint
+npm run frontend:build
+```
+
+## Local Kubernetes
+
+Build the API image, create the local secret file, and launch the three-node kind environment:
+
+```bash
+docker compose build api
+cp k8s/overlays/local/secrets.env.example k8s/overlays/local/secrets.env
+./k8s/scripts/create-local-cluster.sh
+curl -H 'Host: settleup.local' http://127.0.0.1:8081/actuator/health
+```
+
+The local Secret file is ignored by Git. Replace its placeholder credentials before enabling Plaid-backed flows. See [the Kubernetes runbook](docs/kubernetes.md) for validation and resilience commands.
 
 ## Vercel deployment
 

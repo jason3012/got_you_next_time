@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/auth/**",
                                 "/plaid/webhook",
                                 "/actuator/health",
+                                "/actuator/health/**",
                                 "/actuator/info",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",

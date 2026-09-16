@@ -10,6 +10,7 @@ import com.settleup.expense.dto.ExpenseResponse;
 import com.settleup.expense.dto.ExpenseSplitRequest;
 import com.settleup.expense.dto.ExpenseSplitResponse;
 import com.settleup.group.Group;
+import com.settleup.group.GroupMemberRole;
 import com.settleup.group.GroupMemberRepository;
 import com.settleup.group.GroupService;
 import com.settleup.user.User;
@@ -91,9 +92,13 @@ public class ExpenseService {
 
     @Transactional
     public void delete(UUID groupId, UUID userId, UUID expenseId) {
-        groupService.requireMember(groupId, userId);
+        var membership = groupService.requireMember(groupId, userId);
         Expense expense = expenseRepository.findByIdAndGroupId(expenseId, groupId)
                 .orElseThrow(() -> new NotFoundException("Expense was not found"));
+        if (!expense.getCreatedBy().getId().equals(userId)
+                && membership.getRole() != GroupMemberRole.ADMIN) {
+            throw new ForbiddenException("Only the expense creator or a group admin may delete an expense");
+        }
         expenseRepository.delete(expense);
     }
 

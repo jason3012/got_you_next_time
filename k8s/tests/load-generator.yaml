@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-load-generator
+  namespace: settleup
+  labels:
+    app.kubernetes.io/name: settleup-load-generator
+spec:
+  restartPolicy: Never
+  containers:
+    - name: load-generator
+      image: busybox:1.36
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          for worker in $(seq 1 20); do
+            while true; do
+              wget -q -O /dev/null http://api/actuator/health
+            done &
+          done
+          wait
+      resources:
+        requests:
+          cpu: 50m
+          memory: 16Mi
+        limits:
+          cpu: "2"
+          memory: 64Mi

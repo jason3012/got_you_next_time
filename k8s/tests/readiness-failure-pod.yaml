@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-readiness-failure
+  namespace: settleup
+  labels:
+    app.kubernetes.io/name: settleup-api
+    app.kubernetes.io/component: readiness-test
+spec:
+  restartPolicy: Never
+  containers:
+    - name: api
+      image: settleup-api:local
+      imagePullPolicy: IfNotPresent
+      ports:
+        - name: http
+          containerPort: 8080
+      envFrom:
+        - configMapRef:
+            name: settleup-config
+        - secretRef:
+            name: settleup-secrets
+      env:
+        - name: POSTGRES_HOST
+          value: unavailable-postgres
+      readinessProbe:
+        httpGet:
+          path: /actuator/health/readiness
+          port: 8080
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
