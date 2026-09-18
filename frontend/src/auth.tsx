@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { api } from './api'
-import { clearToken, loadToken, saveToken } from './auth-storage'
+import { clearToken, loadRefreshToken, loadToken, saveTokens } from './auth-storage'
 import type { User } from './types'
 
 type AuthContextValue = {
@@ -18,10 +18,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    api.onUnauthorized(() => { clearToken(); setUser(null) })
     const token = loadToken()
-    if (!token) { setLoading(false); return }
-    api.setToken(token)
-    api.me().then(setUser).catch(() => { clearToken(); api.setToken(null) }).finally(() => setLoading(false))
+    if (!token) {
+      setLoading(false)
+      return () => api.onUnauthorized(() => {})
+    }
+    api.setTokens(token, loadRefreshToken())
+    api.me().then(setUser).catch(() => { clearToken(); api.setTokens(null) }).finally(() => setLoading(false))
+    return () => api.onUnauthorized(() => {})
   }, [])
 
   const value = useMemo<AuthContextValue>(() => ({
@@ -29,13 +34,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     async login(email, password) {
       const response = await api.login(email, password)
-      saveToken(response.accessToken); api.setToken(response.accessToken); setUser(response.user)
+      saveTokens(response.accessToken, response.refreshToken); api.setTokens(response.accessToken, response.refreshToken); setUser(response.user)
     },
     async register(email, displayName, password) {
       const response = await api.register(email, displayName, password)
-      saveToken(response.accessToken); api.setToken(response.accessToken); setUser(response.user)
+      saveTokens(response.accessToken, response.refreshToken); api.setTokens(response.accessToken, response.refreshToken); setUser(response.user)
     },
-    logout() { clearToken(); api.setToken(null); setUser(null) },
+    logout() { clearToken(); api.setTokens(null); setUser(null) },
   }), [loading, user])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -5,6 +5,7 @@ import type {
   BankConnection,
   BankTransaction,
   Expense,
+  ExpenseSuggestion,
   Group,
   MemberRole,
   SplitInput,
@@ -23,9 +24,17 @@ export class ApiClientError extends Error {
 
 class ApiClient {
   private token: string | null = null
+  private refreshToken: string | null = null
+  private refreshPromise: Promise<AuthResponse> | null = null
+  private onSessionExpired: (() => void) | null = null
 
-  setToken(token: string | null) {
+  setTokens(token: string | null, refreshToken: string | null = null) {
     this.token = token
+    this.refreshToken = refreshToken
+  }
+
+  onUnauthorized(handler: () => void) {
+    this.onSessionExpired = handler
   }
 
   register(email: string, displayName: string, password: string) {
@@ -147,17 +156,61 @@ class ApiClient {
     })
   }
 
-  private async request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  suggestions() {
+    return this.request<ExpenseSuggestion[]>('/suggestions')
+  }
+
+  confirmSuggestion(suggestionId: string) {
+    return this.request(`/suggestions/${suggestionId}/confirm`, {
+      method: 'POST',
+      body: JSON.stringify({ splitStrategy: 'EQUAL', splits: [] }),
+    })
+  }
+
+  rejectSuggestion(suggestionId: string) {
+    return this.request<ExpenseSuggestion>(`/suggestions/${suggestionId}/reject`, { method: 'POST' })
+  }
+
+  private async request<T>(path: string, init: RequestInit = {}, retry = true): Promise<T> {
     const headers = new Headers(init.headers)
     if (init.body) headers.set('Content-Type', 'application/json')
     if (this.token) headers.set('Authorization', `Bearer ${this.token}`)
     const response = await fetch(`${API_URL}${path}`, { ...init, headers })
+    if (response.status === 401 && retry && this.refreshToken && path !== '/auth/refresh') {
+      try {
+        const refreshed = await this.refreshAccessToken()
+        this.setTokens(refreshed.accessToken, refreshed.refreshToken)
+        window.localStorage.setItem('settleup.access-token', refreshed.accessToken)
+        window.localStorage.setItem('settleup.refresh-token', refreshed.refreshToken)
+        return this.request<T>(path, init, false)
+      } catch {
+        this.setTokens(null, null)
+        this.onSessionExpired?.()
+      }
+    }
     if (!response.ok) {
-      const error = (await response.json()) as ApiError
+      const error = await response.json().catch(() => ({
+        timestamp: new Date().toISOString(), status: response.status, code: 'REQUEST_FAILED',
+        message: 'The request could not be completed.', fieldErrors: {},
+      })) as ApiError
       throw new ApiClientError(error)
     }
     if (response.status === 204) return undefined as T
     return (await response.json()) as T
+  }
+
+  private refreshAccessToken() {
+    if (!this.refreshPromise) {
+      this.refreshPromise = fetch(`${API_URL}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken: this.refreshToken }),
+      }).then(async (response) => {
+        if (!response.ok) throw new Error('Session refresh failed')
+        return response.json() as Promise<AuthResponse>
+      }).finally(() => { this.refreshPromise = null })
+    }
+    return this.refreshPromise
   }
 }
 

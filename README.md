@@ -4,7 +4,7 @@ SettleUp is an expense-sharing application for friend groups. It will connect to
 
 ## Project status
 
-Phases 0–11 are complete: 12 of 16 planned phases, or 75% of the phase roadmap. Progress is counted only from completed phase gates, not partially implemented work from later phases.
+Phases 0–13 are complete: 14 of 16 planned phases, or 87.5% of the phase roadmap. Progress is counted only from completed phase gates, not partially implemented work from later phases.
 
 - Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
 - Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
@@ -15,8 +15,10 @@ Phases 0–11 are complete: 12 of 16 planned phases, or 75% of the phase roadmap
 - Phase 9: a 35-test integration suite against a shared Testcontainers PostgreSQL 16 instance, including authentication, authorization, expenses, settlements, Plaid webhook idempotency, and suggestion decisions
 - Phase 10: a cached multi-stage, non-root API image and health-gated Docker Compose stack; the runtime image is approximately 261 MiB
 - Phase 11: a three-node local kind deployment with Kustomize, two API replicas, PostgreSQL persistent storage, ingress, health probes, resource controls, metrics-server, and CPU autoscaling from 2–5 replicas
+- Phase 12: a production-ready, mobile-first React UI with cached server state, validated equal/exact/percentage splits, Plaid Link, a suggestion inbox, automatic token renewal, and complete loading, error, and empty states
+- Phase 13: PR CI, GHCR image publication and optional cluster deployment, Prometheus metrics, a provisioned Grafana dashboard, structured JSON logs, and request correlation IDs
 
-Work continues strictly in phase order. The next executable bundle is Phase 12, followed by Phase 13. Phase 14 is optional and incurs AWS cost; Phase 15 is the final shipping pass. See `settleup-build-spec.md` for their acceptance gates.
+Work continues strictly in phase order. Phase 14 is optional and incurs AWS cost; Phase 15 is the final shipping pass. See `settleup-build-spec.md` for their acceptance gates.
 
 ## Tech stack
 
@@ -86,6 +88,7 @@ The current API supports:
 - group balances, suggested settlement transfers, and recorded settlements
 - Plaid Link tokens, bank connections, transaction synchronization, and importing transactions as expenses
 - pending expense suggestions, explicit confirmation into a real group expense, and rejection feedback
+- renewable access sessions using signed refresh tokens
 
 Install and run the frontend during development:
 
@@ -124,6 +127,16 @@ curl -H 'Host: settleup.local' http://127.0.0.1:8081/actuator/health
 ```
 
 The local Secret file is ignored by Git. Replace its placeholder credentials before enabling Plaid-backed flows. See [the Kubernetes runbook](docs/kubernetes.md) for validation and resilience commands.
+
+Prometheus and Grafana are included in the local overlay. After the cluster starts, open the provisioned dashboard with:
+
+```bash
+kubectl -n settleup port-forward service/grafana 3000:3000
+```
+
+Then visit <http://localhost:3000/d/settleup-overview/settleup-overview>. The dashboard tracks request rate, p95 latency, error rate, JVM heap, and database pool utilization.
+
+![SettleUp Grafana dashboard](docs/grafana-dashboard.png)
 
 ## Vercel deployment
 

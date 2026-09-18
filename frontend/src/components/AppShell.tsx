@@ -1,5 +1,5 @@
 import { DrawablyDivider } from 'drawably/react'
-import { BookOpen, Landmark, LogOut, Users } from 'lucide-react'
+import { BookOpen, Inbox, LogOut, Users } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 
@@ -17,7 +17,7 @@ export function AppShell() {
       <main className="app-content"><Outlet /></main>
       <nav className="bottom-nav" aria-label="App navigation">
         <Link className={onDashboard && !location.hash ? 'active' : ''} to="/app"><BookOpen /><span>Activity</span></Link>
-        <Link className={onDashboard && location.hash === '#banks' ? 'active' : ''} to="/app#banks"><Landmark /><span>Banks</span></Link>
+        <Link className={onDashboard && location.hash === '#suggestions' ? 'active' : ''} to="/app#suggestions"><Inbox /><span>Inbox</span></Link>
         <Link className={onDashboard && location.hash === '#groups' ? 'active' : ''} to="/app#groups"><Users /><span>Groups</span></Link>
       </nav>
     </div>
