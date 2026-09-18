@@ -9,6 +9,10 @@ spec:
       app.kubernetes.io/name: settleup-api
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8080"
       labels:
         app.kubernetes.io/name: settleup-api
     spec:

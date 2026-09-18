@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Tabs from '@radix-ui/react-tabs'
 import { Spinner } from '@fluentui/react-components'
-import { ArrowRight, Check, Landmark, Plus, RefreshCw, Users, X } from 'lucide-react'
+import { ArrowRight, Check, Inbox, Landmark, Plus, RefreshCw, Users, X } from 'lucide-react'
 import { DrawablyBadge, DrawablyButton, DrawablyInput, DrawablySelect } from 'drawably/react'
 import { usePlaidLink } from 'react-plaid-link'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -16,12 +17,8 @@ function message(caught: unknown) {
 }
 
 export function DashboardPage() {
-  const [connections, setConnections] = useState<BankConnection[]>([])
   const location = useLocation()
   const navigate = useNavigate()
-  const [transactions, setTransactions] = useState<BankTransaction[]>([])
-  const [groups, setGroups] = useState<Group[]>([])
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [linkToken, setLinkToken] = useState<string | null>(null)
   const [wantLink, setWantLink] = useState(false)
@@ -31,17 +28,19 @@ export function DashboardPage() {
   const [sharing, setSharing] = useState(false)
   const [newGroupOpen, setNewGroupOpen] = useState(false)
   const [newGroupName, setNewGroupName] = useState('')
+  const queryClient = useQueryClient()
 
-  const refresh = useCallback(async () => {
-    setError('')
-    try {
-      const [nextConnections, nextTransactions, nextGroups] = await Promise.all([api.bankConnections(), api.bankTransactions(), api.groups()])
-      setConnections(nextConnections); setTransactions(nextTransactions); setGroups(nextGroups)
-    } catch (caught) { setError(message(caught)) }
-    finally { setLoading(false) }
-  }, [])
-
-  useEffect(() => { void refresh() }, [refresh])
+  const dashboard = useQuery({
+    queryKey: ['dashboard'],
+    queryFn: async () => {
+      const [connections, transactions, groups, suggestions] = await Promise.all([
+        api.bankConnections(), api.bankTransactions(), api.groups(), api.suggestions(),
+      ])
+      return { connections, transactions, groups, suggestions }
+    },
+  })
+  const { connections = [], transactions = [], groups = [], suggestions = [] } = dashboard.data ?? {}
+  const refresh = useCallback(async () => { await queryClient.invalidateQueries({ queryKey: ['dashboard'] }) }, [queryClient])
 
   const onSuccess = useCallback(async (publicToken: string | null, metadata: { institution: { institution_id: string; name: string } | null }) => {
     if (!publicToken) return
@@ -96,15 +95,24 @@ export function DashboardPage() {
     catch (caught) { setError(message(caught)) }
   }
 
-  if (loading) return <div className="page-loader"><Spinner size="large" label="Reading your activity" /></div>
+  if (dashboard.isLoading) return <div className="page-loader"><Spinner size="large" label="Reading your activity" /></div>
+
+  async function decideSuggestion(suggestionId: string, decision: 'confirm' | 'reject') {
+    setError('')
+    try {
+      if (decision === 'confirm') await api.confirmSuggestion(suggestionId)
+      else await api.rejectSuggestion(suggestionId)
+      await refresh()
+    } catch (caught) { setError(message(caught)) }
+  }
 
   return (
     <div className="dashboard-page">
       <section className="dashboard-intro"><h1>Start with the transaction.</h1><p>Choose what belonged to the group. We’ll keep the bigger picture, so nobody has to count every cent.</p></section>
-      {error && <ErrorNote>{error}</ErrorNote>}
+      {(error || dashboard.error) && <ErrorNote role="alert">{error || message(dashboard.error)}</ErrorNote>}
 
-      <Tabs.Root className="dashboard-tabs" value={location.hash === '#groups' ? 'groups' : 'activity'} onValueChange={(value) => navigate(value === 'groups' ? '/app#groups' : '/app')}>
-        <Tabs.List aria-label="Dashboard views"><Tabs.Trigger value="activity">Activity</Tabs.Trigger><Tabs.Trigger value="groups">Friend groups</Tabs.Trigger></Tabs.List>
+      <Tabs.Root className="dashboard-tabs" value={location.hash === '#groups' ? 'groups' : location.hash === '#suggestions' ? 'suggestions' : 'activity'} onValueChange={(value) => navigate(value === 'activity' ? '/app' : `/app#${value}`)}>
+        <Tabs.List aria-label="Dashboard views"><Tabs.Trigger value="activity">Activity</Tabs.Trigger><Tabs.Trigger value="suggestions">Suggestions {suggestions.length ? `(${suggestions.length})` : ''}</Tabs.Trigger><Tabs.Trigger value="groups">Friend groups</Tabs.Trigger></Tabs.List>
         <Tabs.Content value="activity">
           <section className="bank-strip" id="banks" aria-labelledby="banks-title">
             <div><span className="section-icon"><Landmark /></span><div><h2 id="banks-title">Connected banks</h2><p>{connections.length ? `${connections.length} connection${connections.length === 1 ? '' : 's'} keeping the trail current.` : 'Your real purchases are the beginning of the story.'}</p></div></div>
@@ -117,6 +125,18 @@ export function DashboardPage() {
             {connections.length === 0 ? <EmptyNote title="Connect a bank to begin">Your purchases will appear here, ready to add to a friend group.</EmptyNote> : availableTransactions.length === 0 ? <EmptyNote title="The page is clean">Sync your bank to check for new transactions.</EmptyNote> : <div className="transaction-list">
               {availableTransactions.map((transaction) => <article className="transaction-row" key={transaction.id}><span className="merchant-mark">{(transaction.merchantName ?? transaction.name)[0]}</span><div className="transaction-main"><strong>{transaction.merchantName ?? transaction.name}</strong><span>{transaction.accountName} · {shortDate(transaction.postedDate)}{transaction.pending ? ' · pending' : ''}</span></div><b>{money(transaction.amountCents, transaction.isoCurrencyCode)}</b><DrawablyButton variant="outline" onClick={() => { setShareTransaction(transaction); setShareGroupId(groups[0]?.id ?? '') }}>Share <ArrowRight /></DrawablyButton></article>)}
             </div>}
+          </section>
+        </Tabs.Content>
+
+        <Tabs.Content value="suggestions">
+          <section className="suggestion-section" id="suggestions" aria-labelledby="suggestions-title">
+            <div className="section-heading"><div><h2 id="suggestions-title">Suggestion inbox</h2><p>We found purchases that may belong to a group. You make the final call.</p></div><span>{suggestions.length} to review</span></div>
+            {suggestions.length === 0 ? <EmptyNote title="Nothing waiting">New suggestions will appear after your bank transactions sync.</EmptyNote> : <div className="suggestion-list">{suggestions.map((suggestion) => <article key={suggestion.id}>
+              <span className="suggestion-icon"><Inbox /></span>
+              <div className="suggestion-copy"><strong>{suggestion.merchantName}</strong><span>{suggestion.groupName} · {shortDate(suggestion.postedDate)}</span><small>{suggestion.reasons.join(' · ')}</small></div>
+              <b>{money(suggestion.amountCents, suggestion.isoCurrencyCode)}</b>
+              <div className="suggestion-actions"><DrawablyButton variant="outline" onClick={() => void decideSuggestion(suggestion.id, 'reject')}>Not this one</DrawablyButton><DrawablyButton variant="solid" onClick={() => void decideSuggestion(suggestion.id, 'confirm')}><Check /> Add to {suggestion.groupName}</DrawablyButton></div>
+            </article>)}</div>}
           </section>
         </Tabs.Content>
 

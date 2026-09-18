@@ -10,9 +10,26 @@ export interface User {
 
 export interface AuthResponse {
   accessToken: string
+  refreshToken: string
   tokenType: 'Bearer'
   expiresInSeconds: number
   user: User
+}
+
+export interface ExpenseSuggestion {
+  id: string
+  transactionId: string
+  groupId: string
+  groupName: string
+  merchantName: string
+  amountCents: number
+  isoCurrencyCode: string
+  category: string | null
+  postedDate: string
+  confidence: number
+  reasons: string[]
+  status: 'PENDING' | 'CONFIRMED' | 'REJECTED'
+  createdAt: string
 }
 
 export interface GroupMember {

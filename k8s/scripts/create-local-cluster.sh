@@ -32,3 +32,5 @@ kubectl rollout status deployment/metrics-server -n kube-system --timeout=180s
 kubectl apply -k k8s/overlays/local
 kubectl rollout status statefulset/postgres -n settleup --timeout=180s
 kubectl rollout status deployment/api -n settleup --timeout=180s
+kubectl rollout status deployment/prometheus -n settleup --timeout=180s
+kubectl rollout status deployment/grafana -n settleup --timeout=180s

@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: settleup
 resources:
   - ../../base
+  - ../../observability
 images:
   - name: settleup-api
     newName: settleup-api

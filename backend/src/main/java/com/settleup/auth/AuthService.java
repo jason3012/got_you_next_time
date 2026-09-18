@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -57,9 +58,22 @@ public class AuthService {
         return response(user);
     }
 
+    @Transactional(readOnly = true)
+    public AuthResponse refresh(String refreshToken) {
+        UUID userId = jwtService.refreshSubject(refreshToken);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UnauthorizedException("The session is no longer valid"));
+        return response(user);
+    }
+
     private AuthResponse response(User user) {
         JwtService.IssuedToken token = jwtService.issue(user);
-        return new AuthResponse(token.value(), "Bearer", token.expiresInSeconds(), UserResponse.from(user));
+        return new AuthResponse(
+                token.value(),
+                token.refreshToken(),
+                "Bearer",
+                token.expiresInSeconds(),
+                UserResponse.from(user));
     }
 
     private String normalizeEmail(String email) {

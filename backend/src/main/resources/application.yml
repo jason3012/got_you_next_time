@@ -25,12 +25,24 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+logging:
+  structured:
+    format:
+      console: logstash
 
 security:
   jwt:
     issuer: settleup-api
     ttl: PT1H
+    refresh-ttl: P30D
     secret: ${JWT_SECRET}
   token-encryption-key: ${TOKEN_ENCRYPTION_KEY}
 
