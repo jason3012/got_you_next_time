@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#f5e6d8"/>
+  <path d="M180 255 C430 225 650 285 900 245 S1390 225 1740 260" fill="none" stroke="#17130f" stroke-width="8" stroke-linecap="round"/>
+  <text x="180" y="185" fill="#b95a37" font-family="Arial, sans-serif" font-size="42" letter-spacing="5">A 90-SECOND PRODUCT TOUR</text>
+  <text x="180" y="475" fill="#17130f" font-family="Arial, sans-serif" font-size="150" font-weight="700">SettleUp</text>
+  <text x="180" y="610" fill="#17130f" font-family="Arial, sans-serif" font-size="72">Start with the transaction.</text>
+  <text x="180" y="705" fill="#5f574f" font-family="Arial, sans-serif" font-size="38">Turn bank activity into reviewed group expenses.</text>
+  <text x="180" y="765" fill="#5f574f" font-family="Arial, sans-serif" font-size="38">See clear balances and the shortest path back to even.</text>
+  <circle cx="1640" cy="770" r="95" fill="#c8c7a7"/>
+  <circle cx="1565" cy="855" r="58" fill="#dc9c72"/>
+  <circle cx="1720" cy="875" r="68" fill="#ded0ad"/>
+</svg>

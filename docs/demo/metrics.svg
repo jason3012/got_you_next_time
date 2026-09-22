@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#17130f"/>
+  <text x="160" y="170" fill="#d97850" font-family="Arial, sans-serif" font-size="38" letter-spacing="5">MEASURED LOCALLY · SEPTEMBER 22, 2026</text>
+  <text x="160" y="320" fill="#f5e6d8" font-family="Arial, sans-serif" font-size="96" font-weight="700">Built to be checked.</text>
+  <g font-family="Arial, sans-serif">
+    <text x="170" y="520" fill="#f5e6d8" font-size="74" font-weight="700">39</text>
+    <text x="170" y="575" fill="#bdb4aa" font-size="30">passing backend tests</text>
+    <text x="650" y="520" fill="#f5e6d8" font-size="74" font-weight="700">89.2%</text>
+    <text x="650" y="575" fill="#bdb4aa" font-size="30">core algorithm line coverage</text>
+    <text x="1210" y="520" fill="#f5e6d8" font-size="74" font-weight="700">23 ms</text>
+    <text x="1210" y="575" fill="#bdb4aa" font-size="30">p95 at 20 concurrent clients</text>
+    <text x="170" y="790" fill="#f5e6d8" font-size="74" font-weight="700">263.5 MiB</text>
+    <text x="170" y="845" fill="#bdb4aa" font-size="30">non-root API image</text>
+    <text x="830" y="790" fill="#f5e6d8" font-size="74" font-weight="700">1,000 members</text>
+    <text x="830" y="845" fill="#bdb4aa" font-size="30">largest settlement group tested</text>
+  </g>
+  <path d="M160 920 H1760" stroke="#d97850" stroke-width="6"/>
+  <text x="160" y="990" fill="#f5e6d8" font-family="Arial, sans-serif" font-size="34">React · Spring Boot · PostgreSQL · Plaid · Kubernetes · Prometheus · Grafana</text>
+</svg>

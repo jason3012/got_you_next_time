@@ -92,6 +92,23 @@ class SettlementPlannerTest {
         }
     }
 
+    @Test
+    void settlesAOneThousandMemberGroup() {
+        int groupSize = 1_000;
+        Map<UUID, Money> balances = new HashMap<>();
+        for (int index = 1; index <= groupSize / 2; index++) {
+            balances.put(id(index), new Money(-100));
+        }
+        for (int index = groupSize / 2 + 1; index <= groupSize; index++) {
+            balances.put(id(index), new Money(100));
+        }
+
+        List<Transfer> transfers = planner.plan(balances);
+
+        assertThat(transfers).hasSize(groupSize / 2);
+        assertSettlesExactly(balances, transfers);
+    }
+
     private void assertSettlesExactly(Map<UUID, Money> balances, List<Transfer> transfers) {
         Map<UUID, Long> remaining = new HashMap<>();
         balances.forEach((userId, balance) -> remaining.put(userId, balance.cents()));

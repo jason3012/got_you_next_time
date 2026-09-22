@@ -1,164 +1,124 @@
 # SettleUp
 
-SettleUp is an expense-sharing application for friend groups. It will connect to a bank account, find transactions that may belong to a group, show each member's balance, and suggest payments to settle the group.
+SettleUp turns bank activity into shared expenses, balances, and a practical path back to even. Instead of asking everyone to enter every purchase by hand, it imports transactions through Plaid, identifies likely group expenses, and asks a person to confirm or reject each suggestion before money moves into a group ledger.
 
-## Project status
+That review step is the important difference: detection removes repetitive entry, but people keep control when a merchant, amount, or category is ambiguous. Manual expenses remain available when a transaction is missing or cash was used.
 
-Phases 0–13 are complete: 14 of 16 planned phases, or 87.5% of the phase roadmap. Progress is counted only from completed phase gates, not partially implemented work from later phases.
+[Watch the 90-second product tour](docs/settleup-demo.mp4)
 
-- Phases 0–2: local tooling, Spring Boot and PostgreSQL setup, Flyway migrations, and core domain entities
-- Phases 3–4: group membership, shared expenses, equal/exact/percentage splits, balances, settlement plans, and recorded payments
-- Phase 5: account registration and login, BCrypt password hashing, signed JWT access tokens, authenticated user identity, and protected APIs
-- Phase 6: Plaid Link, encrypted bank credentials, account discovery, cursor-based transaction sync, verified webhooks, and transaction-to-expense conversion
-- Phase 7: React authentication and protected routing; a Plaid-first transaction feed; transaction-to-group sharing; friend groups, balances, suggested settlements, and manual fallback expenses; plus the conceptual-sketch landing experience and scroll-linked phone-circle story
-- Phase 8: rule-based transaction classification using merchant history, category, and typical amounts; a confidence-gated suggestion inbox; confirm/reject endpoints; and negative feedback that suppresses repeated bad suggestions
-- Phase 9: a 35-test integration suite against a shared Testcontainers PostgreSQL 16 instance, including authentication, authorization, expenses, settlements, Plaid webhook idempotency, and suggestion decisions
-- Phase 10: a cached multi-stage, non-root API image and health-gated Docker Compose stack; the runtime image is approximately 261 MiB
-- Phase 11: a three-node local kind deployment with Kustomize, two API replicas, PostgreSQL persistent storage, ingress, health probes, resource controls, metrics-server, and CPU autoscaling from 2–5 replicas
-- Phase 12: a production-ready, mobile-first React UI with cached server state, validated equal/exact/percentage splits, Plaid Link, a suggestion inbox, automatic token renewal, and complete loading, error, and empty states
-- Phase 13: PR CI, GHCR image publication and optional cluster deployment, Prometheus metrics, a provisioned Grafana dashboard, structured JSON logs, and request correlation IDs
+## What it does
 
-Work continues strictly in phase order. Phase 14 is optional and incurs AWS cost; Phase 15 is the final shipping pass. See `settleup-build-spec.md` for their acceptance gates.
+- Connects sandbox bank accounts and synchronizes transactions through Plaid
+- Learns from merchant history, category, amount, confirmations, and rejections
+- Supports equal, exact, and percentage expense splits with integer-cent accounting
+- Shows group balances and suggests a compact set of payments to settle them
+- Protects every user-scoped operation with signed access and refresh tokens
+- Exposes health, metrics, structured logs, and correlation IDs for operations
 
-## Tech stack
+## Architecture
 
-- Java 21 and Spring Boot 3 for the backend
-- PostgreSQL 16 and Flyway for data and database migrations
-- Plaid Sandbox for bank account data
-- Docker for local services and app containers
-- Kubernetes, kind, and Helm for local deployment work
-- React, Vite, TypeScript, Fluent UI, Radix UI, Drawably, and GSAP for the frontend
-
-## Setup
-
-This project uses macOS and Homebrew for local tool installation.
-
-```bash
-git clone https://github.com/jason3012/payUp.git settleUp
-cd settleUp
-npm run setup
-npm run phase0:check
+```mermaid
+flowchart LR
+    Person[Browser] -->|HTTPS / JWT| UI[React + Vite]
+    UI -->|REST / JSON| API[Spring Boot API]
+    API -->|JPA + Flyway| DB[(PostgreSQL)]
+    API -->|Link, sync, webhooks| Plaid[Plaid Sandbox]
+    API -->|Micrometer metrics| Prom[Prometheus]
+    Prom --> Grafana[Grafana]
+    CI[GitHub Actions] -->|test + build| Image[GHCR image]
+    Image --> Runtime[Docker Compose or Kubernetes]
 ```
 
-`npm run setup` installs the tools listed in the `Brewfile`.
+The API owns authentication, authorization, transaction classification, expense validation, balance calculation, and settlement planning. PostgreSQL is the source of truth. The React client coordinates server state and keeps review decisions explicit. See [the architecture guide](docs/architecture.md) for request flows, trust boundaries, and deployment detail.
 
-Create a local environment file:
+## Local setup
+
+Docker Desktop, Node.js 22+, and Java 21 are required. Copy the example environment file and replace the JWT and encryption placeholders with separate random Base64 secrets; add Plaid Sandbox credentials to exercise bank flows.
 
 ```bash
+git clone https://github.com/jason3012/got_you_next_time.git && cd got_you_next_time
 cp .env.example .env
-```
-
-Generate a JWT signing secret and add it to `.env`:
-
-```bash
-openssl rand -base64 48
-```
-
-Generate a separate key for encrypting Plaid access tokens:
-
-```bash
-openssl rand -base64 32
-```
-
-Plaid-backed bank connection features begin in Phase 6. Before working on those features, create a Plaid Sandbox account and add its client ID and secret to `.env`. Each local setup needs its own credentials.
-
-Start the production-shaped local stack:
-
-```bash
 docker compose up --build -d
+npm ci --prefix frontend && npm run frontend:dev
 ```
 
-The health endpoint is available at <http://localhost:8080/actuator/health>. API documentation is available at <http://localhost:8080/swagger-ui.html>.
+Open the client at <http://localhost:5173>, API documentation at <http://localhost:8080/swagger-ui.html>, and readiness status at <http://localhost:8080/actuator/health/readiness>.
 
-Register or sign in to receive an access token:
+## Why this stack
 
-```bash
-curl -X POST http://localhost:8080/auth/register \
-  -H 'Content-Type: application/json' \
-  -d '{"email":"you@example.com","displayName":"Your Name","password":"a-long-password"}'
-```
+| Choice | Reason |
+| --- | --- |
+| Java 21 + Spring Boot 3 | Strong transaction boundaries, validation, security primitives, and production diagnostics for the financial core |
+| PostgreSQL 16 + Flyway | Relational constraints and repeatable schema evolution suit groups, memberships, splits, and immutable money records |
+| React + TypeScript + Vite | Typed component development, fast local feedback, and a small static deployment surface |
+| Plaid Sandbox | A realistic account-link and transaction-sync contract without handling bank credentials directly |
+| Docker + Kubernetes | One reproducible local stack and a portable path to health-checked, replicated deployment |
+| Prometheus + Grafana | Low-friction collection and visualization of request, JVM, and database-pool behavior |
 
-Send the returned token as `Authorization: Bearer <accessToken>` when calling protected endpoints. User identity is taken from the token; protected endpoints do not accept a `userId` query parameter.
+## Decisions worth defending
 
-The current API supports:
+- **Money uses integer cents.** Arithmetic and persistence stay exact; presentation is the only place decimal currency formatting occurs.
+- **Plaid access tokens are encrypted at rest.** A dedicated application key protects provider credentials independently from login-token signing.
+- **Webhook processing is idempotent.** Persisted event identity prevents retries from importing the same activity twice.
+- **Settlement planning is greedy.** Matching the largest debtors and creditors is fast, deterministic, and easy to explain. It minimizes transfers for common cases without claiming a globally minimal result for every possible balance set.
+- **Classification keeps a person in the loop.** Only sufficiently confident transactions become suggestions, and confirmation is required before an expense affects balances. Rejections become negative feedback.
 
-- account registration, login, and the authenticated user profile
-- group creation, listing, membership management, and role-based administration
-- expense creation and deletion with equal, exact, or percentage splits
-- group balances, suggested settlement transfers, and recorded settlements
-- Plaid Link tokens, bank connections, transaction synchronization, and importing transactions as expenses
-- pending expense suggestions, explicit confirmation into a real group expense, and rejection feedback
-- renewable access sessions using signed refresh tokens
+## Measured evidence
 
-Install and run the frontend during development:
+Measurements below were collected locally on September 22, 2026. Latency results describe the readiness endpoint on Docker Desktop on Apple Silicon; they are reproducible development evidence, not a production service-level objective.
 
-```bash
-npm install --prefix frontend
-npm run frontend:dev
-```
+| Measure | Result | Method |
+| --- | ---: | --- |
+| Backend test suite | 39 passing | `./mvnw verify` with PostgreSQL 16 Testcontainers |
+| Core algorithm coverage | 89.2% lines, 74.7% branches | JaCoCo over classification, splitting, balances, and settlement planning |
+| API image size | 263.5 MiB / 276,329,527 bytes | `docker image inspect settleup-api:latest` |
+| Readiness throughput | 1,567 requests/second | 2,000 requests at concurrency 20 |
+| Readiness p95 latency | 23 ms | ApacheBench local run, zero failed requests |
+| Largest settlement group tested | 1,000 members | Exact-balance unit test producing 500 transfers |
 
-The frontend uses <http://localhost:5173> and connects to the API at <http://localhost:8080> by default. Set `VITE_API_URL` when the backend is hosted elsewhere.
+Resume-ready summary:
+
+- Built a full-stack expense-sharing system that converts synchronized bank activity into reviewed expenses, exact balances, and deterministic settlement plans.
+- Shipped a non-root 263.5 MiB API image with 39 passing backend tests, 89.2% core algorithm line coverage, 23 ms local p95 readiness latency, and a verified 1,000-member settlement case.
 
 ## Verification
 
-Run the backend integration suite with Docker available:
+Run backend verification with Docker available:
 
 ```bash
 cd backend
 ./mvnw verify
 ```
 
-Run the frontend checks:
+The HTML coverage report is written to `backend/target/site/jacoco/index.html`.
+
+Run frontend checks from the repository root:
 
 ```bash
 npm run frontend:lint
 npm run frontend:build
 ```
 
-## Local Kubernetes
-
-Build the API image, create the local secret file, and launch the three-node kind environment:
+Rebuild the product tour after updating its source screenshots or title cards:
 
 ```bash
-docker compose build api
-cp k8s/overlays/local/secrets.env.example k8s/overlays/local/secrets.env
-./k8s/scripts/create-local-cluster.sh
-curl -H 'Host: settleup.local' http://127.0.0.1:8081/actuator/health
+./scripts/build-demo-video.sh
 ```
 
-The local Secret file is ignored by Git. Replace its placeholder credentials before enabling Plaid-backed flows. See [the Kubernetes runbook](docs/kubernetes.md) for validation and resilience commands.
+The script requires FFmpeg and `rsvg-convert` from librsvg.
 
-Prometheus and Grafana are included in the local overlay. After the cluster starts, open the provisioned dashboard with:
+## Deployment and operations
 
-```bash
-kubectl -n settleup port-forward service/grafana 3000:3000
-```
+The production-shaped Docker Compose stack runs the non-root API image against PostgreSQL with health-gated startup. The local Kubernetes overlay adds two API replicas, persistent database storage, ingress, resource limits, metrics-server, horizontal scaling, Prometheus, and a provisioned Grafana dashboard.
 
-Then visit <http://localhost:3000/d/settleup-overview/settleup-overview>. The dashboard tracks request rate, p95 latency, error rate, JVM heap, and database pool utilization.
+Phase 14, the optional AWS/EKS deployment, is intentionally deferred. It can be added later as another deployment target because application configuration, container packaging, health probes, manifests, and observability are already separated from the cloud provider.
 
-![SettleUp Grafana dashboard](docs/grafana-dashboard.png)
+The GitHub Actions workflow tests pull requests, publishes the API image to GHCR, and supports an optional cluster deployment when credentials are configured. The root `vercel.json` deploys the frontend; set `VITE_API_URL` to the public HTTPS API before enabling authenticated product flows.
 
-## Vercel deployment
+## Reference
 
-The repository-level `vercel.json` deploys the Vite application in `frontend/` and preserves client-side routes with an SPA fallback.
-
-```bash
-npx vercel        # preview deployment
-npx vercel --prod # production deployment
-```
-
-The public landing experience works as a standalone Vercel deployment. Before enabling authentication, transactions, groups, and settlements in production, host the Spring Boot API and PostgreSQL separately and set `VITE_API_URL` in the Vercel project to that API's public HTTPS URL.
-
-## Commands
-
-```bash
-npm run phase0:check        # Check local tools
-npm run update              # Update tooling and project dependencies
-npm run update:tooling      # Update Homebrew-managed tools
-npm run update:dependencies # Update backend and frontend dependencies
-npm run frontend:dev        # Start the React development server
-npm run frontend:build      # Type-check and build the frontend
-npm run frontend:lint       # Type-check the frontend
-```
-
-Review dependency changes and run tests before committing an update.
+- [API reference](docs/api.md)
+- [Architecture and security decisions](docs/architecture.md)
+- [Kubernetes runbook](docs/kubernetes.md)
+- [Settlement algorithm](docs/settlement-algorithm.md)
+- [Full build specification](settleup-build-spec.md)
