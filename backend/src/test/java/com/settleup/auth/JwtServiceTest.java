@@ -51,5 +51,6 @@ class JwtServiceTest {
         assertThat(jwt.getIssuedAt()).isEqualTo(now);
         assertThat(jwt.getExpiresAt()).isEqualTo(now.plusSeconds(3600));
         assertThat(issued.expiresInSeconds()).isEqualTo(3600);
+        assertThat(service.issue(user).refreshToken()).isNotEqualTo(issued.refreshToken());
     }
 }

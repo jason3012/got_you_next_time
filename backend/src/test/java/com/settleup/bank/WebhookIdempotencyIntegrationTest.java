@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.time.Instant;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +26,9 @@ class WebhookIdempotencyIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     private BankTransactionRepository transactions;
+
+    @Autowired
+    private BankConnectionRepository connections;
 
     @Test
     void replayingWebhookDoesNotDuplicateTransactions() throws Exception {
@@ -66,6 +69,10 @@ class WebhookIdempotencyIntegrationTest extends AbstractIntegrationTest {
                     .andExpect(status().isOk());
         }
 
+        await().atMost(Duration.ofSeconds(5)).untilAsserted(() ->
+                org.assertj.core.api.Assertions.assertThat(
+                        connections.findByPlaidItemId("item-1").orElseThrow().getSyncCursor())
+                        .isEqualTo("cursor-2"));
         org.assertj.core.api.Assertions.assertThat(transactions.count()).isEqualTo(1);
         org.assertj.core.api.Assertions.assertThat(
                 transactions.findByPlaidTransactionId("txn-1").orElseThrow().getMerchantName())

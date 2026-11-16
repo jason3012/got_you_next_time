@@ -78,6 +78,7 @@ public class JwtService {
     private String encode(User user, Instant issuedAt, Duration lifetime, String tokenType) {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(issuer)
+                .id(UUID.randomUUID().toString())
                 .issuedAt(issuedAt)
                 .expiresAt(issuedAt.plus(lifetime))
                 .subject(user.getId().toString())
