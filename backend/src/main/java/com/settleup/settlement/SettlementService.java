@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.time.Instant;
 
 @Service
 public class SettlementService {
@@ -76,6 +77,12 @@ public class SettlementService {
     @Transactional
     public SettlementResponse record(UUID groupId, UUID userId, RecordSettlementRequest request) {
         Group group = groupService.requireMember(groupId, userId).getGroup();
+        var actingMembership = groupMemberRepository.findByGroupIdAndUserId(groupId, userId).orElseThrow();
+        if (!userId.equals(request.fromUserId())
+                && actingMembership.getRole() != com.settleup.group.GroupMemberRole.ADMIN) {
+            throw new com.settleup.common.exception.ForbiddenException(
+                    "Only the person who owes this payment or a group organizer may mark it paid");
+        }
         if (request.fromUserId().equals(request.toUserId())) {
             throw new ValidationException("Settlement users must be different");
         }
@@ -102,6 +109,22 @@ public class SettlementService {
         return toResponse(settlement);
     }
 
+    @Transactional
+    public void reverse(UUID groupId, UUID userId, UUID settlementId) {
+        var membership = groupService.requireMember(groupId, userId);
+        Settlement settlement = settlementRepository.findByIdAndGroupId(settlementId, groupId)
+                .orElseThrow(() -> new com.settleup.common.exception.NotFoundException("Payment record was not found"));
+        if (!settlement.getFromUser().getId().equals(userId)
+                && membership.getRole() != com.settleup.group.GroupMemberRole.ADMIN) {
+            throw new com.settleup.common.exception.ForbiddenException(
+                    "Only the person who recorded the payment or a group organizer may undo it");
+        }
+        if (settlement.getReversedAt() != null) {
+            throw new ValidationException("This payment has already been undone");
+        }
+        settlement.reverse(Instant.now());
+    }
+
     private Map<UUID, Money> calculateBalances(UUID groupId) {
         List<GroupMember> members = groupMemberRepository.findAllByGroupIdOrderByCreatedAtAsc(groupId);
         List<ExpenseEntry> expenses = expenseRepository.findAllByGroupIdOrderByCreatedAtDesc(groupId).stream()
@@ -109,6 +132,7 @@ public class SettlementService {
                 .toList();
         List<SettlementEntry> settlements = settlementRepository.findAllByGroupIdOrderByCreatedAtAsc(groupId)
                 .stream()
+                .filter(settlement -> settlement.getReversedAt() == null)
                 .map(settlement -> new SettlementEntry(
                         settlement.getFromUser().getId(),
                         settlement.getToUser().getId(),

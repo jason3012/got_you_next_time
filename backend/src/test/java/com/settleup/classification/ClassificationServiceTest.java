@@ -110,7 +110,7 @@ class ClassificationServiceTest {
                 .thenReturn(List.of(firstMembership, secondMembership));
         ExpenseResponse expenseResponse = new ExpenseResponse(
                 expenseId, groupId, userId, userId, "Luna Pizza", 8_420,
-                SplitStrategy.EQUAL, List.of(), null);
+                "USD", SplitStrategy.EQUAL, List.of(), null);
         when(expenseService.create(any(), any(), any())).thenReturn(expenseResponse);
         when(expenseRepository.getReferenceById(expenseId)).thenReturn(expense);
         when(suggestionRepository.findAllByTransactionIdAndStatus(

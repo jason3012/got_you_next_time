@@ -10,6 +10,7 @@ import type {
   MemberRole,
   SplitInput,
   SplitStrategy,
+  SettlementRecord,
   Transfer,
   User,
 } from './types'
@@ -24,13 +25,11 @@ export class ApiClientError extends Error {
 
 class ApiClient {
   private token: string | null = null
-  private refreshToken: string | null = null
   private refreshPromise: Promise<AuthResponse> | null = null
   private onSessionExpired: (() => void) | null = null
 
-  setTokens(token: string | null, refreshToken: string | null = null) {
+  setToken(token: string | null) {
     this.token = token
-    this.refreshToken = refreshToken
   }
 
   onUnauthorized(handler: () => void) {
@@ -63,8 +62,8 @@ class ApiClient {
     return this.request<Group>(`/groups/${groupId}`)
   }
 
-  createGroup(name: string) {
-    return this.request<Group>('/groups', { method: 'POST', body: JSON.stringify({ name }) })
+  createGroup(name: string, currencyCode = 'USD') {
+    return this.request<Group>('/groups', { method: 'POST', body: JSON.stringify({ name, currencyCode }) })
   }
 
   addMember(groupId: string, email: string, role: MemberRole) {
@@ -101,6 +100,13 @@ class ApiClient {
     return this.request<void>(`/groups/${groupId}/expenses/${expenseId}`, { method: 'DELETE' })
   }
 
+  updateExpense(expenseId: string, input: {
+    groupId: string; description: string; amountCents: number; payerId: string; splitStrategy: SplitStrategy; splits: SplitInput[]
+  }) {
+    const { groupId, ...body } = input
+    return this.request<Expense>(`/groups/${groupId}/expenses/${expenseId}`, { method: 'PUT', body: JSON.stringify(body) })
+  }
+
   balances(groupId: string) {
     return this.request<Balance[]>(`/groups/${groupId}/balances`)
   }
@@ -110,10 +116,14 @@ class ApiClient {
   }
 
   recordSettlement(groupId: string, fromUserId: string, toUserId: string, amountCents: number) {
-    return this.request(`/groups/${groupId}/settlements`, {
+    return this.request<SettlementRecord>(`/groups/${groupId}/settlements`, {
       method: 'POST',
       body: JSON.stringify({ fromUserId, toUserId, amountCents }),
     })
+  }
+
+  reverseSettlement(groupId: string, settlementId: string) {
+    return this.request<void>(`/groups/${groupId}/settlements/${settlementId}`, { method: 'DELETE' })
   }
 
   createLinkToken() {
@@ -140,6 +150,10 @@ class ApiClient {
 
   disconnectBank(connectionId: string) {
     return this.request<void>(`/bank/connections/${connectionId}`, { method: 'DELETE' })
+  }
+
+  logout() {
+    return this.request<void>('/auth/logout', { method: 'POST' }, false)
   }
 
   bankTransactions() {
@@ -175,16 +189,15 @@ class ApiClient {
     const headers = new Headers(init.headers)
     if (init.body) headers.set('Content-Type', 'application/json')
     if (this.token) headers.set('Authorization', `Bearer ${this.token}`)
-    const response = await fetch(`${API_URL}${path}`, { ...init, headers })
-    if (response.status === 401 && retry && this.refreshToken && path !== '/auth/refresh') {
+    const response = await fetch(`${API_URL}${path}`, { ...init, headers, credentials: 'include' })
+    if (response.status === 401 && retry && path !== '/auth/refresh' && path !== '/auth/login' && path !== '/auth/register') {
       try {
         const refreshed = await this.refreshAccessToken()
-        this.setTokens(refreshed.accessToken, refreshed.refreshToken)
+        this.setToken(refreshed.accessToken)
         window.localStorage.setItem('settleup.access-token', refreshed.accessToken)
-        window.localStorage.setItem('settleup.refresh-token', refreshed.refreshToken)
         return this.request<T>(path, init, false)
       } catch {
-        this.setTokens(null, null)
+        this.setToken(null)
         this.onSessionExpired?.()
       }
     }
@@ -203,8 +216,7 @@ class ApiClient {
     if (!this.refreshPromise) {
       this.refreshPromise = fetch(`${API_URL}/auth/refresh`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refreshToken: this.refreshToken }),
+        credentials: 'include',
       }).then(async (response) => {
         if (!response.ok) throw new Error('Session refresh failed')
         return response.json() as Promise<AuthResponse>

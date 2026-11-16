@@ -7,12 +7,12 @@
   --paper: #f3ebdf;
   --ink: #1b1712;
   --terracotta: #d57b4e;
-  --terracotta-dark: #ae5b39;
+  --terracotta-dark: #8f452d;
   --sage: #aba784;
   --drawably-stroke: #1b1712;
   --drawably-fill: #ae5b39;
   --drawably-paper: #f3ebdf;
-  --drawably-success: #697052;
+  --drawably-success: #596146;
   --drawably-error: #a33e2b;
 }
 
@@ -778,6 +778,7 @@ a {
 .connection-row { grid-column: 1 / -1; display: grid !important; grid-template-columns: 1fr auto auto; align-items: center; gap: 14px; padding-top: 14px; border-top: 1px solid rgba(27, 23, 18, 0.25); }
 .connection-row > div { display: grid; }
 .connection-row span { color: #645d50; font-size: 0.82rem; }
+.connection-actions, .row-actions { display: flex; align-items: center; gap: 2px; }
 
 .transaction-section,
 .suggestion-section,
@@ -843,9 +844,13 @@ a {
 .dialog-sheet > p { margin: 0; color: #6b6055; }
 .dialog-close { position: absolute; top: 20px; right: 18px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; color: var(--ink); border: 0; border-radius: 50%; background: rgba(27, 23, 18, 0.08); cursor: pointer; }
 .dialog-close svg { width: 20px; }
+.confirmation-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.confirmation-actions .drawably-button { width: 100%; min-height: 48px; }
+.danger-action.drawably-button { color: var(--paper); background: var(--drawably-error); }
 .form-hint { display: flex; gap: 8px; align-items: flex-start; color: #5d6651 !important; font-size: 0.86rem; }
 .form-hint svg { width: 17px; flex: 0 0 auto; }
 .field-error { color: var(--drawably-error); font-weight: 550; }
+.field-hint { color: #62574d; font-weight: 450; }
 .split-fields { display: grid; gap: 12px; margin: 0; padding: 16px; border: 1px solid rgba(27, 23, 18, 0.35); border-radius: 12px; }
 .split-fields legend { padding: 0 6px; font-weight: 700; }
 .split-fields label { grid-template-columns: minmax(0, 1fr) minmax(110px, 0.55fr) auto; align-items: center; }
@@ -888,6 +893,8 @@ a {
 .member-list small { color: #74695e; }
 .member-list > span:has(.member-remove) { grid-template-columns: auto 1fr auto; }
 .member-remove { grid-column: 3; grid-row: 1 / 3; }
+.undo-note { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; padding: 14px 16px; border: 2px solid var(--ink); border-radius: 14px 11px; background: var(--sage); }
+.undo-note button { min-width: 64px; min-height: 44px; color: var(--ink); font: inherit; font-weight: 700; border: 0; background: transparent; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes sheet-in { from { transform: translateY(36px); opacity: 0; } }
@@ -923,6 +930,7 @@ a {
   .connection-row { grid-template-columns: 1fr auto; }
   .connection-row .drawably-badge { grid-row: 2; justify-self: start; }
   .connection-row .icon-button { grid-column: 2; grid-row: 1 / 3; }
+  .connection-row .connection-actions { grid-column: 2; grid-row: 1 / 3; flex-direction: column; }
   .section-heading { align-items: flex-start; }
   .dashboard-tabs > [role='tablist'] { overflow-x: auto; }
   .dashboard-tabs > [role='tablist'] button { flex: 0 0 auto; }
@@ -941,7 +949,20 @@ a {
   .settlement-list .drawably-button { grid-column: 1 / -1; }
   .expense-list article { grid-template-columns: auto 1fr auto auto; padding: 12px 0; }
   .expense-list .drawably-badge { grid-column: 2 / 3; justify-self: start; }
+  .expense-list .row-actions { grid-column: 4; grid-row: 1 / 3; flex-direction: column; }
   .split-fields label { grid-template-columns: minmax(0, 1fr) 112px auto; }
+}
+
+@media (max-width: 420px) {
+  .group-heading-actions, .confirmation-actions, .suggestion-actions { grid-template-columns: 1fr; }
+  .group-heading-actions { display: grid; }
+  .balance-strip { grid-template-columns: 1fr; }
+  .split-fields label { grid-template-columns: 1fr minmax(96px, 0.6fr) auto; }
+}
+
+@media (forced-colors: active) {
+  :focus-visible { outline-color: Highlight; }
+  .positive, .negative { color: CanvasText; }
 }
 
 @media (min-width: 760px) {

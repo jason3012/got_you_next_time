@@ -91,6 +91,33 @@ public class ExpenseService {
     }
 
     @Transactional
+    public ExpenseResponse update(UUID groupId, UUID userId, UUID expenseId, CreateExpenseRequest request) {
+        var membership = groupService.requireMember(groupId, userId);
+        Expense expense = expenseRepository.findByIdAndGroupId(expenseId, groupId)
+                .orElseThrow(() -> new NotFoundException("Expense was not found"));
+        if (!expense.getCreatedBy().getId().equals(userId) && membership.getRole() != GroupMemberRole.ADMIN) {
+            throw new ForbiddenException("Only the expense creator or a group admin may edit an expense");
+        }
+        if (!groupMemberRepository.existsByGroupIdAndUserId(groupId, request.payerId())) {
+            throw new ForbiddenException("Payer must be a member of the group");
+        }
+        List<CalculatedSplit> calculatedSplits = splitCalculator.calculate(
+                new Money(request.amountCents()), request.splitStrategy(),
+                request.splits().stream().map(this::toSplitInput).toList());
+        for (CalculatedSplit split : calculatedSplits) {
+            if (!groupMemberRepository.existsByGroupIdAndUserId(groupId, split.userId())) {
+                throw new ForbiddenException("Every split participant must be a group member");
+            }
+        }
+        Map<UUID, User> users = loadUsers(calculatedSplits.stream().map(CalculatedSplit::userId).toList());
+        User payer = userRepository.findById(request.payerId())
+                .orElseThrow(() -> new NotFoundException("Payer was not found"));
+        expense.update(payer, request.description().trim(), new Money(request.amountCents()), request.splitStrategy());
+        calculatedSplits.forEach(split -> expense.addSplit(new ExpenseSplit(expense, users.get(split.userId()), split.amount())));
+        return toResponse(expenseRepository.saveAndFlush(expense));
+    }
+
+    @Transactional
     public void delete(UUID groupId, UUID userId, UUID expenseId) {
         var membership = groupService.requireMember(groupId, userId);
         Expense expense = expenseRepository.findByIdAndGroupId(expenseId, groupId)
@@ -128,6 +155,7 @@ public class ExpenseService {
                 expense.getCreatedBy().getId(),
                 expense.getDescription(),
                 expense.getAmount().cents(),
+                expense.getCurrencyCode(),
                 expense.getSplitStrategy(),
                 splits,
                 expense.getCreatedAt());

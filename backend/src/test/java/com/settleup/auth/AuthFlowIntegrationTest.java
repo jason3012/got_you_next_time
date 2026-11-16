@@ -1,6 +1,7 @@
 package com.settleup.auth;
 
 import com.settleup.support.AbstractIntegrationTest;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -42,23 +43,19 @@ class AuthFlowIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void refreshTokenRenewsTheSession() throws Exception {
-        String registration = mockMvc.perform(post("/auth/register")
+        var registration = mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"refresh@example.com\",\"displayName\":\"Refresh\",\"password\":\"password-123\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.refreshToken").isNotEmpty())
-                .andReturn().getResponse().getContentAsString();
-        String refreshToken = objectMapper.readTree(registration).path("refreshToken").asText();
+                .andExpect(jsonPath("$.refreshToken").doesNotExist())
+                .andReturn();
+        Cookie refreshCookie = registration.getResponse().getCookie("settleup-refresh");
 
         mockMvc.perform(post("/auth/refresh")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new RefreshRequest(refreshToken))))
+                        .cookie(refreshCookie))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty())
-                .andExpect(jsonPath("$.refreshToken").isNotEmpty())
+                .andExpect(jsonPath("$.refreshToken").doesNotExist())
                 .andExpect(jsonPath("$.user.email").value("refresh@example.com"));
-    }
-
-    private record RefreshRequest(String refreshToken) {
     }
 }

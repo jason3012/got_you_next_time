@@ -15,7 +15,7 @@ type Mode = 'login' | 'register'
 const authSchema = z.object({
   displayName: z.string().trim(),
   email: z.string().email('Enter a valid email address.'),
-  password: z.string().min(8, 'Use at least 8 characters.'),
+  password: z.string().min(12, 'Use at least 12 characters.'),
 })
 type AuthFields = z.infer<typeof authSchema>
 
@@ -56,8 +56,8 @@ export function AuthPage() {
           <Tabs.List className="auth-tabs" aria-label="Account action"><Tabs.Trigger value="register">Create account</Tabs.Trigger><Tabs.Trigger value="login">Sign in</Tabs.Trigger></Tabs.List>
           <form className="auth-form" onSubmit={submit} noValidate>
             {mode === 'register' && <label>Your name<DrawablyInput autoComplete="name" {...field('displayName')} placeholder="Jamie Chen" /></label>}
-            <label>Email<DrawablyInput type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} {...field('email')} placeholder="you@example.com" />{errors.email && <small className="field-error">{errors.email.message}</small>}</label>
-            <label>Password<DrawablyInput type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} aria-invalid={Boolean(errors.password)} {...field('password')} placeholder="At least 8 characters" />{errors.password && <small className="field-error">{errors.password.message}</small>}</label>
+            <label>Email<DrawablyInput type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'email-error' : undefined} {...field('email')} placeholder="you@example.com" />{errors.email && <small id="email-error" className="field-error">{errors.email.message}</small>}</label>
+            <label>Password<DrawablyInput type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} aria-invalid={Boolean(errors.password)} aria-describedby={errors.password ? 'password-error' : 'password-hint'} {...field('password')} placeholder={mode === 'login' ? 'Your password' : 'At least 12 characters'} />{mode === 'register' && !errors.password && <small id="password-hint" className="field-hint">Use at least 12 characters.</small>}{errors.password && <small id="password-error" className="field-error">{errors.password.message}</small>}</label>
             {error && <ErrorNote role="alert">{error}</ErrorNote>}
             <DrawablyButton type="submit" variant="solid" state={isSubmitting ? 'loading' : 'idle'} disabled={isSubmitting}>{mode === 'login' ? 'Open my notebook' : 'Create my notebook'} <ArrowRight /></DrawablyButton>
           </form>

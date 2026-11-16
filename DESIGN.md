@@ -3,13 +3,13 @@ name: SettleUp
 description: A field-note money trail for friends who get one another next time.
 colors:
   route-terracotta: "#D57B4E"
-  action-terracotta: "#AE5B39"
+  action-terracotta: "#8F452D"
   resolved-sage: "#ABA784"
   journal-paper: "#F3EBDF"
   graphite-ink: "#1B1712"
   warm-sheet: "#FFFAF2"
   error-ink: "#A33E2B"
-  success-ink: "#697052"
+  success-ink: "#596146"
 typography:
   display:
     fontFamily: "Archivo Variable, Arial, sans-serif"

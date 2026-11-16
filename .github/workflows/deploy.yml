@@ -1,8 +1,10 @@
 name: Build and deploy
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
     branches: [main]
+    types: [completed]
 
 permissions:
   contents: read
@@ -10,9 +12,12 @@ permissions:
 
 jobs:
   publish-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -22,12 +27,12 @@ jobs:
         with:
           context: backend
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/settleup-api:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository_owner }}/settleup-api:${{ github.event.workflow_run.head_sha }}
       - uses: azure/setup-kubectl@v4
       - name: Deploy image
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-          IMAGE: ghcr.io/${{ github.repository_owner }}/settleup-api:${{ github.sha }}
+          IMAGE: ghcr.io/${{ github.repository_owner }}/settleup-api:${{ github.event.workflow_run.head_sha }}
         run: |
           if [ -z "$KUBE_CONFIG" ]; then
             echo "KUBE_CONFIG is not configured; image publication completed and deployment was skipped."

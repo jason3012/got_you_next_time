@@ -31,6 +31,9 @@ public class Group {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "currency_code", nullable = false, length = 3)
+    private String currencyCode;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
@@ -50,7 +53,12 @@ public class Group {
     }
 
     public Group(String name, User createdBy) {
+        this(name, "USD", createdBy);
+    }
+
+    public Group(String name, String currencyCode, User createdBy) {
         this.name = name;
+        this.currencyCode = currencyCode;
         this.createdBy = createdBy;
     }
 
@@ -64,6 +72,7 @@ public class Group {
 
     public UUID getId() { return id; }
     public String getName() { return name; }
+    public String getCurrencyCode() { return currencyCode; }
     public User getCreatedBy() { return createdBy; }
     public Set<GroupMember> getMembers() { return Set.copyOf(members); }
     public Instant getCreatedAt() { return createdAt; }

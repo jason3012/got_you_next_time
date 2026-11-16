@@ -1,16 +1,16 @@
 # SettleUp API
 
-The REST API uses JSON over HTTP. Local base URL: `http://localhost:8080`. Interactive OpenAPI documentation is available at `/swagger-ui.html`, and the machine-readable document is at `/v3/api-docs`.
+The REST API uses JSON over HTTP. Local base URL: `http://localhost:8080`. Authenticated users can open the interactive documentation at `/swagger-ui.html`; the machine-readable document is at `/v3/api-docs`.
 
 ## Authentication
 
-All endpoints except registration, login, token refresh, Plaid webhooks, health/metrics, and OpenAPI require:
+All application endpoints except registration, login, token refresh, logout, and Plaid webhooks require:
 
 ```http
 Authorization: Bearer <accessToken>
 ```
 
-Access tokens expire after one hour. Refresh tokens expire after 30 days and are exchanged through `POST /auth/refresh`. A refresh response rotates both tokens.
+Access tokens expire after one hour and are returned in JSON. Refresh tokens expire after 30 days, are stored only as hashed server-side records, and travel in an HttpOnly, SameSite=Strict cookie. `POST /auth/refresh` rotates the cookie and access token; `POST /auth/logout` revokes it.
 
 ## Endpoints
 
@@ -19,6 +19,7 @@ Access tokens expire after one hour. Refresh tokens expire after 30 days and are
 | `POST` | `/auth/register` | No | Create an account and issue a token pair. |
 | `POST` | `/auth/login` | No | Authenticate and issue a token pair. |
 | `POST` | `/auth/refresh` | No | Rotate a valid refresh token. |
+| `POST` | `/auth/logout` | No | Revoke the refresh cookie and end the session. |
 | `GET` | `/users/me` | Yes | Return the authenticated user. |
 | `POST` | `/groups` | Yes | Create a group; the caller becomes an administrator. |
 | `GET` | `/groups` | Yes | List groups visible to the caller. |
@@ -27,10 +28,12 @@ Access tokens expire after one hour. Refresh tokens expire after 30 days and are
 | `DELETE` | `/groups/{groupId}/members/{userId}` | Admin | Remove a member. |
 | `POST` | `/groups/{groupId}/expenses` | Member | Create an expense and its splits. |
 | `GET` | `/groups/{groupId}/expenses` | Member | List group expenses newest first. |
-| `DELETE` | `/groups/{groupId}/expenses/{expenseId}` | Member | Delete an authorized expense. |
+| `PUT` | `/groups/{groupId}/expenses/{expenseId}` | Creator or admin | Replace an expense and its splits. |
+| `DELETE` | `/groups/{groupId}/expenses/{expenseId}` | Creator or admin | Delete an authorized expense. |
 | `GET` | `/groups/{groupId}/balances` | Member | Return derived member balances. |
 | `GET` | `/groups/{groupId}/settle-up` | Member | Return a deterministic settlement plan. |
-| `POST` | `/groups/{groupId}/settlements` | Member | Record a completed payment. |
+| `POST` | `/groups/{groupId}/settlements` | Debtor or admin | Record a completed payment. |
+| `DELETE` | `/groups/{groupId}/settlements/{settlementId}` | Debtor or admin | Reverse a recorded payment. |
 | `POST` | `/bank/link-token` | Yes | Create a Plaid Link token. |
 | `POST` | `/bank/connections` | Yes | Exchange a Plaid public token and save accounts. |
 | `GET` | `/bank/connections` | Yes | List the caller's bank connections. |
@@ -45,7 +48,7 @@ Access tokens expire after one hour. Refresh tokens expire after 30 days and are
 
 ## Split inputs
 
-Expense amounts and exact shares are integer cents. Every expense includes all intended participants once.
+Expense amounts and exact shares are integer cents. Every expense includes all intended participants once. Each group has one ISO 4217 currency code; manual and imported expenses must use that currency.
 
 - `EQUAL`: `amountCents` and `percentage` are omitted. Remainder cents are distributed deterministically in request order.
 - `EXACT`: every split supplies a non-negative `amountCents`; the shares must equal the expense total.
@@ -88,8 +91,8 @@ Common statuses are `400` for invalid input, `401` for missing or expired authen
 
 | Path | Purpose |
 |---|---|
-| `/actuator/health/liveness` | Process liveness probe. |
-| `/actuator/health/readiness` | Readiness probe including the database. |
-| `/actuator/prometheus` | Prometheus scrape endpoint. |
+| `http://localhost:8081/actuator/health/liveness` | Process liveness probe. |
+| `http://localhost:8081/actuator/health/readiness` | Readiness probe including the database. |
+| `http://localhost:8081/actuator/prometheus` | Prometheus scrape endpoint. |
 
-The exact request and response schemas remain generated from the controller DTOs and are available through OpenAPI.
+The management server is separated from the public application port and should remain private in deployed environments. Exact request and response schemas are generated from the controller DTOs and available through OpenAPI.

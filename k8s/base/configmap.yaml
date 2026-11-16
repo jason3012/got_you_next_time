@@ -9,3 +9,4 @@ data:
   POSTGRES_USER: settleup
   PLAID_ENV: sandbox
   FRONTEND_ORIGIN: http://localhost:5173
+  REFRESH_COOKIE_SECURE: "true"

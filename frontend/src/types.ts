@@ -10,7 +10,7 @@ export interface User {
 
 export interface AuthResponse {
   accessToken: string
-  refreshToken: string
+  refreshToken: string | null
   tokenType: 'Bearer'
   expiresInSeconds: number
   user: User
@@ -42,6 +42,7 @@ export interface GroupMember {
 export interface Group {
   id: string
   name: string
+  currencyCode: string
   createdBy: string
   members: GroupMember[]
   createdAt: string
@@ -60,6 +61,7 @@ export interface Expense {
   createdBy: string
   description: string
   amountCents: number
+  currencyCode: string
   splitStrategy: SplitStrategy
   splits: ExpenseSplit[]
   createdAt: string
@@ -75,6 +77,12 @@ export interface Transfer {
   fromUserId: string
   toUserId: string
   amountCents: number
+}
+
+export interface SettlementRecord extends Transfer {
+  id: string
+  groupId: string
+  createdAt: string
 }
 
 export interface BankAccount {

@@ -25,10 +25,11 @@ The browser owns presentation and short-lived session state. The API is the auth
 
 ### Authentication
 
-1. Registration or login returns a signed access token, a signed refresh token, and the current user.
-2. The web app sends the access token as `Authorization: Bearer <token>`.
-3. On a `401`, the typed API client exchanges the refresh token once, stores the rotated pair, and retries the original request.
-4. Spring Security resolves the user ID from the JWT. Protected endpoints never accept a caller-supplied user ID.
+1. Registration or login returns a signed access token and current user while setting a signed refresh token in an HttpOnly, SameSite=Strict cookie.
+2. The web app keeps the access token in memory-backed session storage and sends it as `Authorization: Bearer <token>`.
+3. On a `401`, the typed API client uses the refresh cookie once, receives a rotated cookie and access token, and retries the original request.
+4. Refresh-token hashes and revocation state are persisted so rotation and logout invalidate prior credentials.
+5. Spring Security resolves the user ID from the JWT. Protected endpoints never accept a caller-supplied user ID.
 
 ### Expense capture
 
@@ -54,15 +55,17 @@ Balances use positive cents for creditors and negative cents for debtors. The pl
 
 The production-shaped local environment uses a multi-stage, non-root API image. Kubernetes runs two API replicas behind nginx ingress, PostgreSQL on persistent storage, readiness/liveness probes, resource limits, and an HPA spanning two to five replicas. Prometheus discovers the API pods, and Grafana provisions the project dashboard automatically.
 
-GitHub Actions runs frontend type checking/builds and the full backend suite on pull requests. Pushes to `main` publish the API image to GHCR. A deployment occurs only when a Kubernetes configuration secret is present.
+GitHub Actions runs frontend linting, tests, builds, and the full backend suite before publishing the API image. A successful `main` CI run may deploy that exact commit when a Kubernetes configuration secret is present.
 
 ## Security boundaries
 
 - Passwords are BCrypt hashes; plaintext passwords are never stored.
-- Access and refresh tokens are signed and type-scoped.
+- Access and refresh tokens are signed and type-scoped; refresh tokens are hashed, rotated, and revocable.
+- Authentication endpoints are rate-limited per client address.
 - Plaid access tokens are encrypted at rest with a separate application key.
 - Plaid webhooks require signature verification before processing.
 - Membership and administrative permissions are checked inside the service layer.
+- Operational endpoints run on a separate management port that is not exposed by the public Kubernetes service.
 - The API container runs as UID/GID `10001`, drops Linux capabilities, and disallows privilege escalation.
 - Logs are structured JSON and every response carries `X-Correlation-ID` for request tracing.
 

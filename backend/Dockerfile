@@ -15,7 +15,8 @@ COPY --from=build --chown=settleup:settleup /workspace/target/settleup-api-*.jar
 
 USER 10001:10001
 EXPOSE 8080
+EXPOSE 8081
 HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=5 \
-  CMD wget -q -O /dev/null http://localhost:8080/actuator/health || exit 1
+  CMD wget -q -O /dev/null http://localhost:8081/actuator/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

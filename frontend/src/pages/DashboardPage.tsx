@@ -3,14 +3,15 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Tabs from '@radix-ui/react-tabs'
 import { Spinner } from '@fluentui/react-components'
-import { ArrowRight, Check, Inbox, Landmark, Plus, RefreshCw, Users, X } from 'lucide-react'
+import { ArrowRight, Check, Inbox, Landmark, Plus, RefreshCw, Trash2, Users, X } from 'lucide-react'
 import { DrawablyBadge, DrawablyButton, DrawablyInput, DrawablySelect } from 'drawably/react'
 import { usePlaidLink } from 'react-plaid-link'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { api, ApiClientError } from '../api'
 import { EmptyNote, ErrorNote } from '../components/Feedback'
-import { money, shortDate } from '../format'
-import type { BankConnection, BankTransaction, Group } from '../types'
+import { ConfirmDialog } from '../components/ConfirmDialog'
+import { money, parseMoneyToCents, shortDate } from '../format'
+import type { BankConnection, BankTransaction, Group, SplitInput, SplitStrategy } from '../types'
 
 function message(caught: unknown) {
   return caught instanceof ApiClientError ? caught.message : 'Something went wrong. Please try again.'
@@ -25,9 +26,13 @@ export function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [shareTransaction, setShareTransaction] = useState<BankTransaction | null>(null)
   const [shareGroupId, setShareGroupId] = useState('')
+  const [shareStrategy, setShareStrategy] = useState<SplitStrategy>('EQUAL')
+  const [shareValues, setShareValues] = useState<Record<string, string>>({})
   const [sharing, setSharing] = useState(false)
   const [newGroupOpen, setNewGroupOpen] = useState(false)
   const [newGroupName, setNewGroupName] = useState('')
+  const [disconnecting, setDisconnecting] = useState<BankConnection | null>(null)
+  const [disconnectBusy, setDisconnectBusy] = useState(false)
   const queryClient = useQueryClient()
 
   const dashboard = useQuery({
@@ -81,12 +86,34 @@ export function DashboardPage() {
     event.preventDefault()
     const group = groups.find((candidate) => candidate.id === shareGroupId)
     if (!shareTransaction || !group) return
+    let splits: SplitInput[] = group.members.map((member) => ({ userId: member.userId }))
+    if (shareStrategy === 'EXACT') {
+      splits = group.members.map((member) => ({ userId: member.userId, amountCents: parseMoneyToCents(shareValues[member.userId] ?? '') ?? -1 }))
+      if (splits.some((split) => (split.amountCents ?? -1) < 0)
+          || splits.reduce((sum, split) => sum + (split.amountCents ?? 0), 0) !== shareTransaction.amountCents) {
+        setError(`Exact shares must add up to ${money(shareTransaction.amountCents, shareTransaction.isoCurrencyCode)}.`); return
+      }
+    } else if (shareStrategy === 'PERCENTAGE') {
+      splits = group.members.map((member) => ({ userId: member.userId, percentage: Number(shareValues[member.userId] ?? '') }))
+      if (splits.some((split) => !Number.isInteger(split.percentage) || (split.percentage ?? -1) < 0 || (split.percentage ?? 101) > 100)
+          || splits.reduce((sum, split) => sum + (split.percentage ?? 0), 0) !== 100) {
+        setError('Percentage shares must be whole numbers that add up to 100%.'); return
+      }
+    }
     setSharing(true); setError('')
     try {
-      await api.importTransaction(shareTransaction.id, { groupId: group.id, description: shareTransaction.merchantName ?? shareTransaction.name, splitStrategy: 'EQUAL', splits: group.members.map((member) => ({ userId: member.userId })) })
-      setShareTransaction(null); setShareGroupId(''); await refresh()
+      await api.importTransaction(shareTransaction.id, { groupId: group.id, description: shareTransaction.merchantName ?? shareTransaction.name, splitStrategy: shareStrategy, splits })
+      setShareTransaction(null); setShareGroupId(''); setShareStrategy('EQUAL'); setShareValues({}); await refresh()
     } catch (caught) { setError(message(caught)) }
     finally { setSharing(false) }
+  }
+
+  async function disconnectBank() {
+    if (!disconnecting) return
+    setDisconnectBusy(true); setError('')
+    try { await api.disconnectBank(disconnecting.id); setDisconnecting(null); await refresh() }
+    catch (caught) { setError(message(caught)) }
+    finally { setDisconnectBusy(false) }
   }
 
   async function createGroup(event: FormEvent) {
@@ -117,13 +144,13 @@ export function DashboardPage() {
           <section className="bank-strip" id="banks" aria-labelledby="banks-title">
             <div><span className="section-icon"><Landmark /></span><div><h2 id="banks-title">Connected banks</h2><p>{connections.length ? `${connections.length} connection${connections.length === 1 ? '' : 's'} keeping the trail current.` : 'Your real purchases are the beginning of the story.'}</p></div></div>
             <DrawablyButton variant="solid" onClick={connectBank} disabled={wantLink}>{connections.length ? 'Add another bank' : 'Connect a bank'} <ArrowRight /></DrawablyButton>
-            {connections.map((connection) => <div className="connection-row" key={connection.id}><div><strong>{connection.institutionName}</strong><span>{connection.accounts.map((account) => `${account.name}${account.mask ? ` · ${account.mask}` : ''}`).join(', ')}</span></div><DrawablyBadge className={connection.status === 'HEALTHY' ? 'status-good' : 'status-error'} variant="outline">{connection.status === 'HEALTHY' ? 'Connected' : 'Needs attention'}</DrawablyBadge><button className="icon-button" type="button" onClick={() => void sync(connection)} aria-label={`Sync ${connection.institutionName}`}><RefreshCw /></button></div>)}
+            {connections.map((connection) => <div className="connection-row" key={connection.id}><div><strong>{connection.institutionName}</strong><span>{connection.accounts.map((account) => `${account.name}${account.mask ? ` · ${account.mask}` : ''}`).join(', ')}</span></div><DrawablyBadge className={connection.status === 'HEALTHY' ? 'status-good' : 'status-error'} variant="outline">{connection.status === 'HEALTHY' ? 'Connected' : 'Needs attention'}</DrawablyBadge><div className="connection-actions"><button className="icon-button" type="button" onClick={() => void sync(connection)} aria-label={`Sync ${connection.institutionName}`}><RefreshCw /></button><button className="icon-button" type="button" onClick={() => setDisconnecting(connection)} aria-label={`Disconnect ${connection.institutionName}`}><Trash2 /></button></div></div>)}
           </section>
 
           <section className="transaction-section" aria-labelledby="transactions-title">
             <div className="section-heading"><div><h2 id="transactions-title">Recent transactions</h2></div><span>{availableTransactions.length} ready to review</span></div>
             {connections.length === 0 ? <EmptyNote title="Connect a bank to begin">Your purchases will appear here, ready to add to a friend group.</EmptyNote> : availableTransactions.length === 0 ? <EmptyNote title="The page is clean">Sync your bank to check for new transactions.</EmptyNote> : <div className="transaction-list">
-              {availableTransactions.map((transaction) => <article className="transaction-row" key={transaction.id}><span className="merchant-mark">{(transaction.merchantName ?? transaction.name)[0]}</span><div className="transaction-main"><strong>{transaction.merchantName ?? transaction.name}</strong><span>{transaction.accountName} · {shortDate(transaction.postedDate)}{transaction.pending ? ' · pending' : ''}</span></div><b>{money(transaction.amountCents, transaction.isoCurrencyCode)}</b><DrawablyButton variant="outline" onClick={() => { setShareTransaction(transaction); setShareGroupId(groups[0]?.id ?? '') }}>Share <ArrowRight /></DrawablyButton></article>)}
+              {availableTransactions.map((transaction) => <article className="transaction-row" key={transaction.id}><span className="merchant-mark">{(transaction.merchantName ?? transaction.name)[0]}</span><div className="transaction-main"><strong>{transaction.merchantName ?? transaction.name}</strong><span>{transaction.accountName} · {shortDate(transaction.postedDate)}{transaction.pending ? ' · pending' : ''}</span></div><b>{money(transaction.amountCents, transaction.isoCurrencyCode)}</b><DrawablyButton variant="outline" onClick={() => { setShareTransaction(transaction); setShareGroupId(groups.find((group) => group.currencyCode === transaction.isoCurrencyCode)?.id ?? ''); setShareStrategy('EQUAL'); setShareValues({}) }}>Share <ArrowRight /></DrawablyButton></article>)}
             </div>}
           </section>
         </Tabs.Content>
@@ -147,9 +174,10 @@ export function DashboardPage() {
         </Tabs.Content>
       </Tabs.Root>
 
-      <Dialog.Root open={Boolean(shareTransaction)} onOpenChange={(open) => { if (!open) setShareTransaction(null) }}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="dialog-sheet"><Dialog.Close className="dialog-close"><X /><span className="sr-only">Close</span></Dialog.Close><Dialog.Title>Who shared this?</Dialog.Title><Dialog.Description>{shareTransaction ? `${shareTransaction.merchantName ?? shareTransaction.name} · ${money(shareTransaction.amountCents, shareTransaction.isoCurrencyCode)}` : ''}</Dialog.Description>{groups.length ? <form onSubmit={importSharedTransaction}><label>Friend group<DrawablySelect required value={shareGroupId} onChange={(event) => setShareGroupId(event.target.value)}><option value="">Choose a group</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.name}</option>)}</DrawablySelect></label><p className="form-hint"><Check /> This will split the purchase equally for now. You can adjust the expense later.</p><DrawablyButton type="submit" variant="solid" state={sharing ? 'loading' : 'idle'} disabled={!shareGroupId || sharing}>Add to the shared trail</DrawablyButton></form> : <EmptyNote title="Create a group first">A transaction needs a friend group before it can become a shared expense.</EmptyNote>}</Dialog.Content></Dialog.Portal></Dialog.Root>
+      <Dialog.Root open={Boolean(shareTransaction)} onOpenChange={(open) => { if (!open) setShareTransaction(null) }}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="dialog-sheet"><Dialog.Close className="dialog-close"><X /><span className="sr-only">Close</span></Dialog.Close><Dialog.Title>Share this purchase</Dialog.Title><Dialog.Description>{shareTransaction ? `${shareTransaction.merchantName ?? shareTransaction.name} · ${money(shareTransaction.amountCents, shareTransaction.isoCurrencyCode)}` : ''}</Dialog.Description>{groups.length ? <form onSubmit={importSharedTransaction}><label>Friend group<DrawablySelect required value={shareGroupId} onChange={(event) => setShareGroupId(event.target.value)}><option value="">Choose a group with the same currency</option>{groups.filter((group) => group.currencyCode === shareTransaction?.isoCurrencyCode).map((group) => <option key={group.id} value={group.id}>{group.name}</option>)}</DrawablySelect></label><label>How should it split?<DrawablySelect value={shareStrategy} onChange={(event) => setShareStrategy(event.target.value as SplitStrategy)}><option value="EQUAL">Equally</option><option value="EXACT">Exact amounts</option><option value="PERCENTAGE">Percentages</option></DrawablySelect></label>{shareStrategy !== 'EQUAL' && groups.find((group) => group.id === shareGroupId) && <fieldset className="split-fields"><legend>{shareStrategy === 'EXACT' ? 'Each person’s share' : 'Each person’s percentage'}</legend>{groups.find((group) => group.id === shareGroupId)!.members.map((member) => <label key={member.userId}><span>{member.displayName}</span><DrawablyInput inputMode={shareStrategy === 'EXACT' ? 'decimal' : 'numeric'} value={shareValues[member.userId] ?? ''} onChange={(event) => setShareValues((current) => ({ ...current, [member.userId]: event.target.value }))} placeholder="0" /><small>{shareStrategy === 'EXACT' ? shareTransaction?.isoCurrencyCode : '%'}</small></label>)}</fieldset>}<DrawablyButton type="submit" variant="solid" state={sharing ? 'loading' : 'idle'} disabled={!shareGroupId || sharing}>Add shared expense</DrawablyButton></form> : <EmptyNote title="Create a group first">A transaction needs a friend group before it can become a shared expense.</EmptyNote>}</Dialog.Content></Dialog.Portal></Dialog.Root>
 
-      <Dialog.Root open={newGroupOpen} onOpenChange={setNewGroupOpen}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="dialog-sheet"><Dialog.Close className="dialog-close"><X /><span className="sr-only">Close</span></Dialog.Close><Dialog.Title>Start a friend group</Dialog.Title><Dialog.Description>Give the circle a name. You can invite people next.</Dialog.Description><form onSubmit={createGroup}><label>Group name<DrawablyInput required value={newGroupName} onChange={(event) => setNewGroupName(event.target.value)} placeholder="Sunday dinner crew" /></label><DrawablyButton type="submit" variant="solid"><Users /> Create group</DrawablyButton></form></Dialog.Content></Dialog.Portal></Dialog.Root>
+      <Dialog.Root open={newGroupOpen} onOpenChange={setNewGroupOpen}><Dialog.Portal><Dialog.Overlay className="dialog-overlay" /><Dialog.Content className="dialog-sheet"><Dialog.Close className="dialog-close"><X /><span className="sr-only">Close</span></Dialog.Close><Dialog.Title>Start a friend group</Dialog.Title><Dialog.Description>Give the circle a name. New groups use USD.</Dialog.Description><form onSubmit={createGroup}><label>Group name<DrawablyInput required value={newGroupName} onChange={(event) => setNewGroupName(event.target.value)} placeholder="Sunday dinner crew" /></label><DrawablyButton type="submit" variant="solid"><Users /> Create group</DrawablyButton></form></Dialog.Content></Dialog.Portal></Dialog.Root>
+      <ConfirmDialog open={Boolean(disconnecting)} onOpenChange={(open) => { if (!open && !disconnectBusy) setDisconnecting(null) }} title={`Disconnect ${disconnecting?.institutionName ?? 'this bank'}?`} description="New transactions will stop syncing. Expenses already added to groups will stay in place." confirmLabel="Disconnect bank" busy={disconnectBusy} onConfirm={disconnectBank} />
     </div>
   )
 }

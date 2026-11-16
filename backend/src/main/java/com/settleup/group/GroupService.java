@@ -49,7 +49,8 @@ public class GroupService {
     @Transactional
     public GroupResponse create(UUID userId, CreateGroupRequest request) {
         User creator = requireUser(userId);
-        Group group = groupRepository.saveAndFlush(new Group(request.name().trim(), creator));
+        String currencyCode = request.currencyCode() == null ? "USD" : request.currencyCode();
+        Group group = groupRepository.saveAndFlush(new Group(request.name().trim(), currencyCode, creator));
         groupMemberRepository.saveAndFlush(new GroupMember(group, creator, GroupMemberRole.ADMIN));
         return toResponse(group);
     }
@@ -140,6 +141,7 @@ public class GroupService {
         return new GroupResponse(
                 group.getId(),
                 group.getName(),
+                group.getCurrencyCode(),
                 group.getCreatedBy().getId(),
                 members,
                 group.getCreatedAt(),

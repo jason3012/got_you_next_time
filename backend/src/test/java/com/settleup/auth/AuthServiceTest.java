@@ -55,7 +55,7 @@ class AuthServiceTest {
     }
 
     private AuthService service(UserRepository repository) {
-        return new AuthService(repository, new PlainTextPasswordEncoder(), new StubJwtService());
+        return new AuthService(repository, new PlainTextPasswordEncoder(), new StubJwtService(), new StubRefreshTokenService());
     }
 
     private UserRepository repository(Optional<User> result, AtomicReference<String> lookedUpEmail) {
@@ -91,6 +91,16 @@ class AuthServiceTest {
         @Override
         public IssuedToken issue(User user) {
             return new IssuedToken("token", 3600);
+        }
+    }
+
+    private static final class StubRefreshTokenService extends RefreshTokenService {
+        private StubRefreshTokenService() {
+            super(null, Duration.ofDays(30));
+        }
+
+        @Override
+        public void store(User user, String rawToken) {
         }
     }
 }

@@ -7,6 +7,7 @@ import java.util.UUID;
 public record GroupResponse(
         UUID id,
         String name,
+        String currencyCode,
         UUID createdBy,
         List<GroupMemberResponse> members,
         Instant createdAt,

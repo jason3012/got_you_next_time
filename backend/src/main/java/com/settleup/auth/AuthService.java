@@ -22,11 +22,14 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService,
+                       RefreshTokenService refreshTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Transactional
@@ -48,7 +51,7 @@ public class AuthService {
         return response(user);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmailIgnoreCase(normalizeEmail(request.email()))
                 .orElseThrow(this::invalidCredentials);
@@ -58,16 +61,23 @@ public class AuthService {
         return response(user);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public AuthResponse refresh(String refreshToken) {
         UUID userId = jwtService.refreshSubject(refreshToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UnauthorizedException("The session is no longer valid"));
+        refreshTokenService.rotate(refreshToken, user);
         return response(user);
+    }
+
+    @Transactional
+    public void logout(String refreshToken) {
+        refreshTokenService.revoke(refreshToken);
     }
 
     private AuthResponse response(User user) {
         JwtService.IssuedToken token = jwtService.issue(user);
+        refreshTokenService.store(user, token.refreshToken());
         return new AuthResponse(
                 token.value(),
                 token.refreshToken(),

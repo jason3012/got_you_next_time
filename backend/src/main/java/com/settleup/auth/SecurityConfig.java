@@ -41,15 +41,15 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/auth/**",
                                 "/plaid/webhook",
                                 "/actuator/health",
                                 "/actuator/health/**",
                                 "/actuator/info",
                                 "/actuator/prometheus",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")
+                                "/auth/login",
+                                "/auth/register",
+                                "/auth/refresh",
+                                "/auth/logout")
                         .permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
@@ -69,7 +69,7 @@ public class SecurityConfig {
     ) {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(frontendOrigin));
-        configuration.setAllowedMethods(List.of("GET", "POST", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

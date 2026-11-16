@@ -16,6 +16,7 @@
     "dependencies:check": "./scripts/check-dependency-updates.sh",
     "frontend:dev": "npm --prefix frontend run dev",
     "frontend:build": "npm --prefix frontend run build",
-    "frontend:lint": "npm --prefix frontend run lint"
+    "frontend:lint": "npm --prefix frontend run lint",
+    "frontend:test": "npm --prefix frontend run test"
   }
 }

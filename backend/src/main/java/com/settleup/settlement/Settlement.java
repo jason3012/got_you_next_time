@@ -49,6 +49,9 @@ public class Settlement {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @Column(name = "reversed_at")
+    private Instant reversedAt;
+
     protected Settlement() {
     }
 
@@ -66,4 +69,6 @@ public class Settlement {
     public Money getAmount() { return amount; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
+    public Instant getReversedAt() { return reversedAt; }
+    public void reverse(Instant when) { this.reversedAt = when; }
 }

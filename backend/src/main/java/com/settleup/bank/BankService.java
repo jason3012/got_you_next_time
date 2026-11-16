@@ -18,9 +18,11 @@ import com.settleup.expense.dto.CreateExpenseRequest;
 import com.settleup.expense.dto.ExpenseResponse;
 import com.settleup.user.User;
 import com.settleup.user.UserRepository;
+import com.settleup.group.GroupService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.scheduling.annotation.Async;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -45,6 +47,7 @@ public class BankService {
     private final ExpenseService expenseService;
     private final ExpenseRepository expenseRepository;
     private final ClassificationService classificationService;
+    private final GroupService groupService;
     private final Clock clock;
 
     @Autowired
@@ -57,10 +60,11 @@ public class BankService {
             UserRepository userRepository,
             ExpenseService expenseService,
             ExpenseRepository expenseRepository,
-            ClassificationService classificationService
+            ClassificationService classificationService,
+            GroupService groupService
     ) {
         this(plaidClient, tokenCipher, connectionRepository, accountRepository, transactionRepository,
-                userRepository, expenseService, expenseRepository, classificationService, Clock.systemUTC());
+                userRepository, expenseService, expenseRepository, classificationService, groupService, Clock.systemUTC());
     }
 
     BankService(
@@ -73,6 +77,7 @@ public class BankService {
             ExpenseService expenseService,
             ExpenseRepository expenseRepository,
             ClassificationService classificationService,
+            GroupService groupService,
             Clock clock
     ) {
         this.plaidClient = plaidClient;
@@ -84,6 +89,7 @@ public class BankService {
         this.expenseService = expenseService;
         this.expenseRepository = expenseRepository;
         this.classificationService = classificationService;
+        this.groupService = groupService;
         this.clock = clock;
     }
 
@@ -131,6 +137,7 @@ public class BankService {
         return synchronize(connection);
     }
 
+    @Async("bankSyncExecutor")
     @Transactional
     public void syncWebhook(String itemId) {
         BankConnection connection = connectionRepository.findLockedByPlaidItemId(itemId)
@@ -174,6 +181,11 @@ public class BankService {
         }
         if (transaction.getAmountCents() <= 0) {
             throw new ValidationException("Only outgoing transactions can be imported as expenses");
+        }
+        var group = groupService.requireMember(request.groupId(), userId).getGroup();
+        if (!group.getCurrencyCode().equalsIgnoreCase(transaction.getIsoCurrencyCode())) {
+            throw new ValidationException("This transaction uses " + transaction.getIsoCurrencyCode()
+                    + ", but the group uses " + group.getCurrencyCode());
         }
 
         String description = blankToNull(request.description());

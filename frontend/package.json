@@ -7,6 +7,7 @@
     "dev": "\"$npm_node_execpath\" ./node_modules/vite/bin/vite.js",
     "build": "tsc -b && \"$npm_node_execpath\" ./node_modules/vite/bin/vite.js build",
     "lint": "tsc -b --pretty false",
+    "test": "vitest run",
     "preview": "\"$npm_node_execpath\" ./node_modules/vite/bin/vite.js preview"
   },
   "dependencies": {
@@ -25,13 +26,17 @@
     "react-hook-form": "^7.88.0",
     "react-plaid-link": "5.0.0",
     "react-router-dom": "7.18.3",
-    "zod": "^3.25.76"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^5.0.2",
+    "@vitejs/plugin-react": "^6.3.0",
+    "jsdom": "^29.1.1",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5"
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
   }
 }

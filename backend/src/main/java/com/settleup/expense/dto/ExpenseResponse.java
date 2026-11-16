@@ -13,6 +13,7 @@ public record ExpenseResponse(
         UUID createdBy,
         String description,
         long amountCents,
+        String currencyCode,
         SplitStrategy splitStrategy,
         List<ExpenseSplitResponse> splits,
         Instant createdAt

@@ -50,6 +50,9 @@ public class Expense {
     @Column(name = "amount_cents", nullable = false)
     private Money amount;
 
+    @Column(name = "currency_code", nullable = false, length = 3)
+    private String currencyCode;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "split_strategy", nullable = false)
     private SplitStrategy splitStrategy;
@@ -81,6 +84,7 @@ public class Expense {
         this.createdBy = createdBy;
         this.description = description;
         this.amount = amount;
+        this.currencyCode = group.getCurrencyCode();
         this.splitStrategy = splitStrategy;
     }
 
@@ -94,8 +98,17 @@ public class Expense {
     public User getCreatedBy() { return createdBy; }
     public String getDescription() { return description; }
     public Money getAmount() { return amount; }
+    public String getCurrencyCode() { return currencyCode; }
     public SplitStrategy getSplitStrategy() { return splitStrategy; }
     public Set<ExpenseSplit> getSplits() { return Set.copyOf(splits); }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
+
+    public void update(User paidBy, String description, Money amount, SplitStrategy splitStrategy) {
+        this.paidBy = paidBy;
+        this.description = description;
+        this.amount = amount;
+        this.splitStrategy = splitStrategy;
+        this.splits.clear();
+    }
 }

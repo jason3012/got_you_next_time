@@ -42,7 +42,7 @@ docker compose up --build -d
 npm ci --prefix frontend && npm run frontend:dev
 ```
 
-Open the client at <http://localhost:5173>, API documentation at <http://localhost:8080/swagger-ui.html>, and readiness status at <http://localhost:8080/actuator/health/readiness>.
+Open the client at <http://localhost:5173>, API documentation at <http://localhost:8080/swagger-ui.html> after signing in, and readiness status on the management port at <http://localhost:8081/actuator/health/readiness>.
 
 ## Why this stack
 
@@ -96,6 +96,7 @@ Run frontend checks from the repository root:
 
 ```bash
 npm run frontend:lint
+npm run frontend:test
 npm run frontend:build
 ```
 

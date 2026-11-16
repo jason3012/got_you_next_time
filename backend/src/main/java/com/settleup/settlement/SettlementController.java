@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,5 +49,15 @@ public class SettlementController {
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(settlementService.record(groupId, AuthenticatedUser.id(jwt), request));
+    }
+
+    @DeleteMapping("/settlements/{settlementId}")
+    public ResponseEntity<Void> reverse(
+            @PathVariable UUID groupId,
+            @PathVariable UUID settlementId,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+        settlementService.reverse(groupId, AuthenticatedUser.id(jwt), settlementId);
+        return ResponseEntity.noContent().build();
     }
 }
